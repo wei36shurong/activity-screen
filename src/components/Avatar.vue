@@ -2,7 +2,6 @@
 <div class="avatar" :style="{width: `${size}px`}">
 	<img 
 	v-if="src"
-	class=""
 	:src="src" 
 	:alt="src" 
 	:style="{
@@ -17,7 +16,11 @@
 		backgroundColor: 'rbga(216,216,216,0.2)'
 	}">
 	</div>
-	<div class="name" :class="" v:if="name"> {{name}} </div>
+	<span 
+	class="name" 
+	v:if="name"> 
+	{{name}} 
+	</span>
 </div>
 </template>
 
@@ -41,14 +44,17 @@ export default {
 @sm-size: 30px;
 
 .avatar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	.placeholder {
 		background-color: #d8d8d8;
 		opacity: 0.2;
 	}
-	&.xl { width: @xl-size}
-	&.lg { width: @lg-size}
-	&, &.md { width: @md-size}
-	&.sm { width: @sm-size}
+	// &.xl { width: @xl-size}
+	// &.lg { width: @lg-size}
+	// &, &.md { width: @md-size}
+	// &.sm { width: @sm-size}
 	img, .placeholder { border-radius: 50%; }
 	&.xl>img { height: @xl-size; width: @xl-size; }
 	&.lg>img { height: @lg-size; width: @lg-size; }

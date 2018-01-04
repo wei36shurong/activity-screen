@@ -3,14 +3,6 @@
 	<span slot="header-left">A组选手投票</span>
 	<span slot="header-right">580/600已投票</span>
 	<div class="main">
-		<!-- <div class="row">
-			<div class="row-inner">
-				<avatar class="lg" :src="avatarImg" name="hello"></avatar>
-				<div class="bar-container">
-					<bar :value="300" :max="600"></bar>
-				</div>
-			</div>
-		</div> -->
 		<div class="row" v-for="candidate in candidates">
 			<div class="row-inner">
 				<avatar class="lg" :src="avatarImg" :name="candidate.name"></avatar>

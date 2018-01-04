@@ -39,10 +39,9 @@ export default {
 .box {
 	display: flex;
 	flex-direction: column;
-	.content {
+	& > .content {
 		flex: 1;
-		position: relative;
-		overflow-y: scroll;
+		overflow: scroll;
 	}
 }
 .blurred-bg {
@@ -57,7 +56,7 @@ export default {
 		background-image: linear-gradient(0deg, rgba(0,0,0,.2),rgba(0,0,0,.2)),url(@blurred-img);
 	}
 }
-.box{
+.box {
 	// box-shadow:0 20px 30px rgba(0,0,0,.6);
 	// border:1px solid rgba(255,255,255,.3);
 	color: white;
@@ -70,7 +69,7 @@ export default {
 		box-shadow:0 20px 50px rgba(0,0,0,.9);
 	}
 }
-.content{
+.content {
 	padding: 22.5px;
 	border-bottom-left-radius: @radius;
 	border-bottom-right-radius: @radius;

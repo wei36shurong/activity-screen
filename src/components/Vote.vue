@@ -21,26 +21,4 @@ export default {
 
 <style lang="less">
 @import '../styles/base';
-.container {
-	display: grid;
-	grid-template-columns: 1fr 2fr;
-	grid-column-gap: 10px;
-}
-.side {
-	h4 {
-		text-align: left;
-		margin-bottom: 14px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(5,1fr);
-		grid-column-gap: 35px;
-		margin-bottom: 17px;
-	}
-}
-.main .grid {
-	display: grid;
-	grid-template-columns: repeat(5,1fr);
-	grid-column-gap: 10px;
-}
 </style>

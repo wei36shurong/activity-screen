@@ -3,18 +3,11 @@ import Vuex from 'vuex'
 import router from '@/router/index'
 // console.log(router)
 import VueSocketio from 'vue-socket.io'
+import state from './state'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
-		connect: false,
-		message: null,
-		totalVotes: 600,
-		candidates: [
-			{name: '魏澍榕', voters: ['']},
-			{name: '李雨', voters: ['']}
-		]
-	},
+	state,
 	getters: {
 		getCandidateByName: (state) => (name) => {
 			return state.candidates.find(p => p.name == name) || null
