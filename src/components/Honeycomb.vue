@@ -1,7 +1,5 @@
 <template>
-<div class="honeycomb" 
-	:style="style"
-	>
+<div class="honeycomb" :style="{gridAutoColumns: `${colWidth/2}px`}">
 	<slot></slot>
 </div>
 </template>
@@ -10,16 +8,9 @@
 export default {
 	name: 'Honeycomb',
 	props: {
-		rows: {
+		colWidth: {
 			type: Number,
-			defautl: 6
-		}
-	},
-	data () {
-		return {
-			style: {
-				gridTemplateRows: `repeat(${this.rows}, 30px)`
-			}
+			default: 40
 		}
 	}
 }
@@ -61,7 +52,6 @@ export default {
 	display: grid;
 	grid-row-gap: 5px;
 	grid-auto-flow: column;
-	grid-auto-columns: 20px;
 	& > div { grid-column-end: span 2; }
 }
 </style>

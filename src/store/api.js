@@ -1,23 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '@/router/index'
+// console.log(router)
 import VueSocketio from 'vue-socket.io'
 import state from './state'
-import VueResource from 'vue-resource'
-import router from '@/router/index'
-import {to} from '../utils'
-import types from './mutation-types'
-import activity from './activity'
-
-Vue.use(VueResource)
-Vue.http.options.root = 'http://localhost:3000'
-
-const usersResource = Vue.resource('users{/id}')
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state,
-	modules: { activity },
 	getters: {
 		getCandidateByName: (state) => (name) => {
 			return state.candidates.find(p => p.name == name) || null
@@ -28,34 +18,24 @@ const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		[types.LOAD_USERS] (state, users) {
-			this.state.users = users
-		},
-		// emitted by socket
 		SOCKET_CONNECT: (state, status) => {
 			state.connect = true
 			console.log('socket connect built')
-		},
-		SOCKET_ROUTER: (state, {path}) => {
-			console.log('socket router:', path)
-			router.push(path)
 		},
 		SOCKET_VOTED: (state, {candidate, voter}) => {
 			console.log('voted')
 			const record = state.candidates.find(p => p.name == candidate)
 			record && record.voters.push(voter)
+		},
+		SOCKET_VOTE_BEGIN: () => {
+			console.log('vote_begin')
+			router.push('/vote/during')
 		}
 	},
 	actions: {
-		getAllUsers: ({commit}) => {
-			return new Promise(async (resolve, reject) => {
-				const [err, {body: users}] = await to(usersResource.get())
-				if (err) return
-				commit(types.LOAD_USERS, users)
-				resolve()
-			})
+		otherAction: (context, type) => {
+			return true
 		},
-		// emitted by socket
 		socket_userMessage: (context, message) => {
 			console.log('action', message)
 			context.dispatch('newMessage', message)

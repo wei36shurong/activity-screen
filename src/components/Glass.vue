@@ -6,7 +6,7 @@
 			<span class="header-right"><slot name="header-right"></slot></span>
 			<slot name="header"></slot>
 		</div>
-		<div class="content blurred-bg" :style="{padding: `${padding}`}">
+		<div class="content blurred-bg shaded" :style="{padding: `${padding}`}">
 			<slot></slot>
 		</div>
 	</div>
@@ -30,6 +30,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../styles/variables';
+@import '../styles/extends';
 
 @radius: 25px;
 .glass, .box {
@@ -44,21 +45,7 @@ export default {
 		overflow: scroll;
 	}
 }
-.blurred-bg {
-	background-image:url(@blurred-img);
-	background-repeat:no-repeat;
-	background-size:cover;
-	background-attachment: fixed;
-	&.tinted{
-		background-color: linear-gradient(0deg, rgba(255,255,255,.2),rgba(255,255,255,.2)),url(@blurred-img);
-	}
-	&.shaded{
-		background-image: linear-gradient(0deg, rgba(0,0,0,.2),rgba(0,0,0,.2)),url(@blurred-img);
-	}
-}
 .box {
-	// box-shadow:0 20px 30px rgba(0,0,0,.6);
-	// border:1px solid rgba(255,255,255,.3);
 	color: white;
 	text-align: center;
 	box-sizing:border-box;
@@ -73,7 +60,6 @@ export default {
 	padding: 22.5px;
 	border-bottom-left-radius: @radius;
 	border-bottom-right-radius: @radius;
-	background-image: linear-gradient(0deg, rgba(0,0,0,.2),rgba(0,0,0,.2)),url(@blurred-img);
 }
 .header {
 	border-top-left-radius: @radius;

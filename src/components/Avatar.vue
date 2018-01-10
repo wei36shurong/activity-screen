@@ -8,6 +8,7 @@
 		height: `${size}px`,
 		width: `${size}px`,
 	}">
+
 	<div v-if="!src"
 	class="placeholder"
 	:style="{
@@ -16,11 +17,16 @@
 		backgroundColor: 'rbga(216,216,216,0.2)'
 	}">
 	</div>
+
 	<span 
 	class="name" 
 	v:if="name"> 
 	{{name}} 
 	</span>
+
+	<div v-if="mask" class="mask">
+		{{mask}}
+	</div>
 </div>
 </template>
 
@@ -30,7 +36,8 @@ export default {
 	props: {
 		src: String,
 		name: String,
-		size: Number
+		size: Number,
+		mask: String
 	}
 }
 </script>
@@ -44,6 +51,7 @@ export default {
 @sm-size: 30px;
 
 .avatar {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -56,14 +64,23 @@ export default {
 	// &, &.md { width: @md-size}
 	// &.sm { width: @sm-size}
 	img, .placeholder { border-radius: 50%; }
-	&.xl>img { height: @xl-size; width: @xl-size; }
-	&.lg>img { height: @lg-size; width: @lg-size; }
+	&.xl>img, &.xl>.placeholder { height: @xl-size; width: @xl-size; }
+	&.lg>img, &.lg>.placeholder { height: @lg-size; width: @lg-size; }
 	img, .placeholder, &.md>img, &.md>.placeholder { height: @md-size; width: @md-size; }
-	&.sm>img { height: @sm-size; width: @sm-size; }
+	&.sm>img, &.sm>.placeholder { height: @sm-size; width: @sm-size; }
 	&.xl>.name { margin-top: 20px; font-size: 24px;}
 	&.lg>.name { margin-top: 10px; font-size: 18px;}
 	.name, &.md>.name { margin-top: 4px; font-size: 12px;}
 	&.sm>.name { margin-top: 4px; font-size: 12px;}
+
+	&.selected {
+		& > img, & > .placeholder { border: 2px solid #3BC1E5; }
+	}
+	& > .mask {
+		position: absolute;
+		color: black;
+	}
 }
 
 </style>
+

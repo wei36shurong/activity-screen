@@ -1,13 +1,14 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import Router from 'vue-router'
+
 import CheckIn from '@/components/CheckIn'
 import Vote from '@/components/Vote'
 import VoteBefore from '@/components/VoteBefore'
 import VoteDuring from '@/components/VoteDuring'
 import Lottery from '@/components/Lottery'
+
 Vue.use(Router)
-Vue.use(Vuex)
+
 export default new Router({
 	routes: [
 		{

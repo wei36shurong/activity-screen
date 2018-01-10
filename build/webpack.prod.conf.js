@@ -10,6 +10,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const SshWebpackPlugin = require('ssh-webpack-plugin');
+
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -30,6 +32,17 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    new SshWebpackPlugin({
+      host: '118.25.21.169',
+      port: '22',
+      username: 'root',
+      // password: 'password',
+      privateKey: require('fs').readFileSync('/Users/Shu/.ssh/id_rsa_team'),
+      from: '/Users/Shu/Workspace/initialV/activity-vue/dist',
+      // important: If the 'cover' of value is false,All files in this folder will be cleared before starting deployment.
+      cover: false,
+      to: '/usr/node/activity-server/dist',
+    }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env

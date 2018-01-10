@@ -9,24 +9,41 @@
 		<span slot="header-left">投票</span>
 		<span slot="header-right">109人参与</span>
 		<div class="main">
-			<avatar class="xl" :src="avatarImg" name="魏澍榕"></avatar>
-			<avatar class="xl" :src="avatarImg" name="李雨桐"></avatar>
+			<!-- <h3> {{votes[groupIndex].title}} </h3> -->
+			<avatar class="xl" 
+			v-for="item in candidates"
+			:key="item.title"
+			:src="item.image_url" 
+			:name="item.title"
+			></avatar>
 		</div>
 	</glass>
 </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Glass from '@/components/Glass'
 import Avatar from '@/components/Avatar'
 import avatarImg from '@/assets/avatar.png'
+import GlassButton from '@/components/GlassButton'
 export default {
-	name: 'Vote',
-	components: {Glass, Avatar},
+	name: 'VoteBefore',
+	components: {Glass, Avatar, GlassButton},
 	data () {
 		return {
-			avatarImg
+			avatarImg,
+			groupIndex: 0
 		}
+	},
+	computed: {
+		...mapState('activity', ['votes']),
+		candidates () {
+			return this.votes[this.groupIndex].items
+		}
+	},
+	async created() {
+		// await this.$store.dispatch('getActivity')
 	}
 }
 </script>
