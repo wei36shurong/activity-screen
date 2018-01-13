@@ -5,11 +5,11 @@ import state from './state'
 import VueResource from 'vue-resource'
 import router from '@/router/index'
 import {to} from '../utils'
-import types from './mutation-types'
+// import types from './mutation-types'
 import activity from './activity'
 
 Vue.use(VueResource)
-Vue.http.options.root = 'http://localhost:3000'
+Vue.http.options.root = 'http://118.25.21.169:3000'
 
 const usersResource = Vue.resource('users{/id}')
 
@@ -28,20 +28,22 @@ const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		[types.LOAD_USERS] (state, users) {
+		LOAD_USERS (state, users) {
 			this.state.users = users
 		},
-		// emitted by socket
-		SOCKET_CONNECT: (state, status) => {
-			state.connect = true
-			console.log('socket connect built')
+		LOAD_ACTIVITY (state, activity) {
+			state.activity = activity
 		},
-		SOCKET_ROUTER: (state, {path}) => {
+		// emitted by socket
+		SOCKET_CONNECT (state, status) {
+			console.log('socket connect built')
+			state.connect = true
+		},
+		SOCKET_ROUTER (state, {path}) {
 			console.log('socket router:', path)
 			router.push(path)
 		},
-		SOCKET_VOTED: (state, {candidate, voter}) => {
-			console.log('voted')
+		SOCKET_VOTED (state, {candidate, voter}) {
 			const record = state.candidates.find(p => p.name == candidate)
 			record && record.voters.push(voter)
 		}
@@ -51,21 +53,18 @@ const store = new Vuex.Store({
 			return new Promise(async (resolve, reject) => {
 				const [err, {body: users}] = await to(usersResource.get())
 				if (err) return
-				commit(types.LOAD_USERS, users)
+				commit('LOAD_USERS', users)
 				resolve()
 			})
 		},
 		// emitted by socket
-		socket_userMessage: (context, message) => {
-			console.log('action', message)
-			context.dispatch('newMessage', message)
-			context.commit('NEW_MESSAGE_RECEIVED', message)
-			if (message.is_important) {
-				context.dispatch('alertImportantMessage', message)
-			}
+		socket_mutation ({commit}, {mutation, payload}) {
+			commit(mutation, payload)
 		}
 	}
 })
 
-Vue.use(VueSocketio, 'http://localhost:3000', store)
+// https
+Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
+// Vue.use(VueSocketio, 'http://localhost:3000', store)
 export default store

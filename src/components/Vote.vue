@@ -1,20 +1,35 @@
 <template>
-	<router-view></router-view>
+<div class="vote">
+	<vote-before 
+	v-if="voteStatus(groupIndex) == 0" 
+	:group-index="groupIndex"></vote-before>
+	<vote-during 
+	v-if="voteStatus(groupIndex) == 1"
+	:group-index="groupIndex"></vote-during>
+	<vote-during 
+	v-if="voteStatus(groupIndex) == 2"
+	:group-index="groupIndex"></vote-during>
+</div>
 </template>
 
 <script>
-import Glass from '@/components/Glass'
-import Avatar from '@/components/Avatar'
-import qrcode from '@/assets/qrcode.png'
-import avatarImg from '@/assets/avatar.png'
+import { mapState, mapGetters } from 'vuex'
+import VoteBefore from '@/components/VoteBefore'
+import VoteDuring from '@/components/VoteDuring'
 export default {
 	name: 'Vote',
-	components: {Glass, Avatar},
+	components: {VoteBefore, VoteDuring},
+	computed: {
+		...mapState('activity', ['votes']),
+		...mapGetters('activity', [ 'voteStatus' ])
+	},
+	props: ['groupIndex'],
 	data () {
 		return {
-			qrcode,
-			avatarImg
 		}
+	},
+	async created () {
+		await this.$store.dispatch('activity/getActivity')
 	}
 }
 </script>

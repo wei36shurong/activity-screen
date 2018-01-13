@@ -9,20 +9,22 @@
 		<span slot="header-left">投票</span>
 		<span slot="header-right">109人参与</span>
 		<div class="main">
-			<!-- <h3> {{votes[groupIndex].title}} </h3> -->
-			<avatar class="xl" 
-			v-for="item in candidates"
-			:key="item.title"
-			:src="item.image_url" 
-			:name="item.title"
-			></avatar>
+			<h3> {{votes[groupIndex].title}} </h3>
+			<div class="grid">
+				<avatar class="xl" 
+				v-for="item in localCandidates"
+				:key="item.title"
+				:src="item.image_url" 
+				:name="item.title"
+				></avatar>
+			</div>
 		</div>
 	</glass>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Glass from '@/components/Glass'
 import Avatar from '@/components/Avatar'
 import avatarImg from '@/assets/avatar.png'
@@ -30,16 +32,17 @@ import GlassButton from '@/components/GlassButton'
 export default {
 	name: 'VoteBefore',
 	components: {Glass, Avatar, GlassButton},
+	props: ['groupIndex'],
 	data () {
 		return {
-			avatarImg,
-			groupIndex: 0
+			avatarImg
 		}
 	},
 	computed: {
 		...mapState('activity', ['votes']),
-		candidates () {
-			return this.votes[this.groupIndex].items
+		...mapGetters('activity', [ 'candidates', 'userNum' ]),
+		localCandidates () {
+			return this.candidates(this.groupIndex)
 		}
 	},
 	async created() {
@@ -67,9 +70,11 @@ export default {
 		margin-bottom: 17px;
 	}
 }
-.main .grid {
-	display: grid;
-	grid-template-columns: repeat(5,1fr);
-	grid-column-gap: 10px;
+.main {
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(2,1fr);
+		grid-column-gap: 10px;
+	}
 }
 </style>

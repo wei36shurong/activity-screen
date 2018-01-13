@@ -80,7 +80,6 @@ import Glass from '@/components/Glass'
 import Avatar from '@/components/Avatar'
 import Honeycomb from '@/components/Honeycomb'
 import GlassButton from '@/components/GlassButton'
-// import users from '@/store/users'
 import qrcode from '@/assets/qrcode.png'
 import avatarImg from '@/assets/avatar.png'
 import { getRandomInt } from '@/utils'
@@ -118,6 +117,7 @@ export default {
 			storedUsers: 'users'
 		}),
 		...mapGetters('activity', ['prizeWinners']),
+		// TODO 修改成从activity module里取
 		...mapState([ 'prizeNum', 'prizeName' ]),
 		winner() {
 			const currentPrizeWinners = this.prizeWinners[this.currentPrize]
