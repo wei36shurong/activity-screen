@@ -1,5 +1,5 @@
 <template>
-<button class="xl button glass-button blurred-bg">
+<button class="sm button glass-button blurred-bg">
 	<slot></slot>
 </button>
 </template>

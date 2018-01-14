@@ -1,67 +1,147 @@
+<style lang="less" scoped>
+.container {
+	margin-top: 238px;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.lottery {
+	display: grid;
+	grid-template-columns: 380px 680px 380px;
+	grid-template-rows: 550px;
+	grid-column-gap: 20px;
+	& > .wrapper {
+		position: relative;
+		& > .panel {
+			position: absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	}
+}
+.side {
+	h4 {
+		text-align: left;
+		margin-bottom: 14px;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(5,1fr);
+		grid-column-gap: 35px;
+		grid-row-gap: 10px;
+		grid-auto-rows: minmax(auto, 100%);
+		margin-bottom: 17px;
+	}
+}
+.main {
+	.top {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 25px;
+		.avatar {
+			margin-top: 30px;
+		}
+		.controls {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+		}
+	}
+	.y-scroller {
+		transition-timing-function: ease;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		margin: 0 -22.5px;
+		padding: 0 22.5px;
+	}
+}
+.panel.main /deep/ .content { background-color: #c5000bc0; }
+.panel.left /deep/ .content { background-color: #ff780099; }
+.panel.right /deep/ .content { background-color: #ff780099; }
+</style>
+
 <template>
 <div class="container">
-	<div>
-		<glass>
-			<span slot="header">中奖名单</span>
-			<div class="side">
-				<h4>{{draw.title}}</h4>
-				<div class="grid">
-					<avatar 
-					v-for="winner in draw.winners" 
-					:key="winner._id"
-					:src="winner.info.avatarUrl" 
-					:name="winner.info.name"
-					></avatar>
+	<div class="lottery">
+		<div class="wrapper">
+			<panel class="left">
+				<div class="side">
+					<h4>{{draw.title}}</h4>
+					<div class="grid">
+						<avatar 
+						v-for="winner in draw.winners" 
+						:key="winner._id"
+						:src="winner.info.avatarUrl" 
+						:name="winner.info.name"
+						></avatar>
+					</div>
 				</div>
-			</div>
-		</glass>
-	</div>
-	<div>
-		<glass>
-			<span slot="header-left">投票</span>
-			<span slot="header-right">109人参与</span>
-			<div class="main">
-				<div class="top">
-					<h3> {{draws[currentPrize].title}}获奖者 </h3>
-					<avatar class="lg"
-					:src="winner.info.avatarUrl" 
-					:name="winner.info.name" 
-					></avatar>
-					<glass-button @click.native="play();pause();confirm();"> 开始抽奖 </glass-button>
-				</div>
-				<div class="y-scroller" v-scroll="onScroll">
-					<honeycomb :class="`row-${row}`" :colWidth="colWidth">
-						<div v-for="(user, index) in users">
-							<avatar class="sm"
-							:class="{selected: index == winnerIndex}"
-							:src="user.info.avatarUrl" 
-							></avatar>
+			</panel>
+		</div>
+		<div class="wrapper">
+			<panel class="main">
+				<div class="main">
+					<div class="top">
+						<h3> {{draws[currentPrize].title}}获奖者 </h3>
+						<avatar class="lg"
+						:src="winner.info.avatarUrl" 
+						:name="winner.info.name" 
+						></avatar>
+						<div class="controls">
+							<glass-button @click.native="play"> 1 </glass-button>
+							<glass-button @click.native="pause"> 2 </glass-button>
+							<glass-button @click.native="confirm"> 3 </glass-button>
+							<glass-button @click.native="play();pause();confirm();"> auto </glass-button>
 						</div>
-					</honeycomb>
+					</div>
 				</div>
-			</div>
-		</glass>
+			</panel>
+		</div>
+		<div class="wrapper">
+			<panel class="right">
+				<div class="side">
+					<h4>{{draw.title}}</h4>
+					<div class="grid">
+						<avatar 
+						v-for="winner in draw.winners" 
+						:key="winner._id"
+						:src="winner.info.avatarUrl" 
+						:name="winner.info.name"
+						></avatar>
+					</div>
+				</div>
+			</panel>
+		</div>
 	</div>
 </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import Glass from '@/components/Glass'
+import Panel from '@/components/Panel'
 import Avatar from '@/components/Avatar'
 import Honeycomb from '@/components/Honeycomb'
 import GlassButton from '@/components/GlassButton'
 import qrcode from '@/assets/qrcode.png'
 import avatarImg from '@/assets/avatar.png'
+import mainBg from '@/assets/lottery-main-panel-bg.png'
 import { getRandomInt } from '@/utils'
 import types from '../store/mutation-types'
 export default {
 	name: 'Lottery',
-	components: { Glass, Avatar, Honeycomb, GlassButton },
+	components: { Panel, Avatar, Honeycomb, GlassButton },
 	data () {
 		return {
 			qrcode,
 			avatarImg,
+			mainBg,
 			users: [
 				{
 					_id: '',
@@ -199,61 +279,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.container {
-	display: grid;
-	grid-template-columns: 1fr 2fr;
-	grid-template-rows: 1fr;
-	grid-column-gap: 10px;
-	height: 100%;
-	width: 100%;
-	& > div {
-		position: relative;
-		& > .glass {
-			position: absolute;
-			top:0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-		}
-	}
-}
-.side {
-	h4 {
-		text-align: left;
-		margin-bottom: 14px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(5,1fr);
-		grid-column-gap: 35px;
-		grid-row-gap: 10px;
-		grid-auto-rows: minmax(auto, 100%);
-		margin-bottom: 17px;
-	}
-}
-.main {
-	.top {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-bottom: 25px;
-		.avatar {
-			margin-top: 30px;
-		}
-		.glass-button {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-		}
-	}
-	.y-scroller {
-		transition-timing-function: ease;
-		overflow-x: scroll;
-		overflow-y: hidden;
-		margin: 0 -22.5px;
-		padding: 0 22.5px;
-	}
-}
-</style>

@@ -34,4 +34,16 @@ export default {
 
 <style lang="less">
 @import '../styles/base';
+@import '../styles/variables';
+@import '../styles/extends';
+// TODO 更好的更换背景图的方式
+.vote {
+	&:extend(.cover-background);
+	background-image:url(@vote-img) !important;
+	height: 100%;
+	width: 100%;
+}
+.vote .blurred-bg {
+	background-image:url(@vote-img-blurred) !important;
+}
 </style>

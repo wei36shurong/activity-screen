@@ -46,8 +46,8 @@ export default {
 @import '../styles/variables';
 
 @xl-size: 120px;
-@lg-size: 60px;
-@md-size: 40px;
+@lg-size: 100px;
+@md-size: 50px;
 @sm-size: 30px;
 
 .avatar {
@@ -68,8 +68,10 @@ export default {
 	&.lg>img, &.lg>.placeholder { height: @lg-size; width: @lg-size; }
 	img, .placeholder, &.md>img, &.md>.placeholder { height: @md-size; width: @md-size; }
 	&.sm>img, &.sm>.placeholder { height: @sm-size; width: @sm-size; }
-	&.xl>.name { margin-top: 20px; font-size: 24px;}
-	&.lg>.name { margin-top: 10px; font-size: 18px;}
+
+	&>.name {color: #fff4d4;}
+	&.xl>.name { margin-top: 40px; font-size: 24px;}
+	&.lg>.name { margin-top: 30px; font-size: 22px;}
 	.name, &.md>.name { margin-top: 4px; font-size: 12px;}
 	&.sm>.name { margin-top: 4px; font-size: 12px;}
 
