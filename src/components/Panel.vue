@@ -6,9 +6,9 @@
 			<span class="header-right"><slot name="header-right"></slot></span>
 			<slot name="header"></slot>
 		</div>
-		<div class="content" 
+		<div class="content"
 		:class="{'without-header': !hasHeader}"
-		:style="{padding: `${padding}`}"
+		:style="{padding: `${padding}`, backgroundImage: `url(${bg})`}"
 		>
 			<slot></slot>
 		</div>
@@ -72,6 +72,7 @@ export default {
 		border-top-left-radius: @radius;
 		border-top-right-radius: @radius;
 	}
+	background-repeat: no-repeat;
 }
 .header {
 	border-top-left-radius: @radius;

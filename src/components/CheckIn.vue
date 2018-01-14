@@ -34,6 +34,11 @@ h3 {
 }
 .panel.side /deep/ .content { background-color: #ff780099; }
 .panel.main /deep/ .content { background-color: #c5000bc0; }
+
+@thick-text-color: #ffd797;
+.main /deep/ .name {
+	color: @thick-text-color;
+}
 </style>
 
 <template>
@@ -46,7 +51,7 @@ h3 {
 			</panel>
 		</div>
 		<div class="wrapper">
-			<panel class="main" :style="{backgroundImage: `url(${mainBg})`}">
+			<panel class="main" :bg="mainBg">
 			<!-- <panel class="main" style="background-image:url(../assets/check-in-main-panel-bg.png)"> -->
 				<h3>热烈欢迎</h3>
 				<avatar class='lg'
@@ -57,7 +62,6 @@ h3 {
 					已有<span style="color:#ffd797;">{{users.length}}</span>人签到入场
 				</p>
 				<honeycomb-scroller style="margin-top:15px;" 
-				:autoPlay="false"
 				:row="3" 
 				:colWidth='40' 
 				:users="users" />

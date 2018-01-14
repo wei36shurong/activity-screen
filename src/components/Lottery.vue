@@ -24,97 +24,121 @@
 		}
 	}
 }
-.side {
-	h4 {
-		text-align: left;
-		margin-bottom: 14px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(5,1fr);
-		grid-column-gap: 35px;
-		grid-row-gap: 10px;
-		grid-auto-rows: minmax(auto, 100%);
-		margin-bottom: 17px;
-	}
-}
-.main {
-	.top {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-bottom: 25px;
-		.avatar {
-			margin-top: 30px;
-		}
-		.controls {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-		}
-	}
-	.y-scroller {
-		transition-timing-function: ease;
-		overflow-x: scroll;
-		overflow-y: hidden;
-		margin: 0 -22.5px;
-		padding: 0 22.5px;
-	}
-}
 .panel.main /deep/ .content { background-color: #c5000bc0; }
 .panel.left /deep/ .content { background-color: #ff780099; }
 .panel.right /deep/ .content { background-color: #ff780099; }
+
+.panel /deep/ .content {
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+@dilute-text-color: #fff4d4;
+@thick-text-color: #ffd797;
+h3, h4, span, p {
+	color: @dilute-text-color;
+}
+h3 { font-size: 26px;}
+h4 { font-size: 20px;}
+
+.main /deep/ h4,
+.main /deep/ p,
+.main /deep/ span,
+.main /deep/ .name {
+	color: @thick-text-color;
+}
+
+.prize-img-wrapper {
+	height:220px;
+	width:220px;
+	margin-top:56px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	.prize-img {
+		box-sizing: border-box;
+		width: 100%;
+		padding: 15px;
+	}
+}
+
+.avatar.xl /deep/ img {
+	border: 15px solid #ffc107;
+	box-shadow: 0 0 60px 0px #000000ad;
+}
+// TODO
+.wrapper.main {
+	position: relative;
+	.crown {
+		position: absolute;
+		z-index: 99;
+		top: 96px;
+		left: 288px;
+	}
+}
+
+.wrapper.right .grid{
+	display: grid;
+	grid-template-rows: 46px;
+	grid-row-gap: 12px;
+	width: 100%;
+	.row {
+		display: flex;
+		align-items: center;
+		justify-items: center;
+		.name {
+			font-size: 20px;
+			padding-left: 22px;
+			flex: 1;
+			text-align: left;
+			vertical-align: middle;
+		}
+	}
+}
+
 </style>
 
 <template>
 <div class="container">
 	<div class="lottery">
-		<div class="wrapper">
+		<div class="wrapper left">
 			<panel class="left">
-				<div class="side">
-					<h4>{{draw.title}}</h4>
-					<div class="grid">
-						<avatar 
-						v-for="winner in draw.winners" 
-						:key="winner._id"
-						:src="winner.info.avatarUrl" 
-						:name="winner.info.name"
-						></avatar>
-					</div>
+				<h3>{{draw.title}}</h3>
+				<div class="prize-img-wrapper" 
+				:style="{backgroundImage: `url(${prizeBg})`}">
+					<img class="prize-img" :src="draw.image_url">
 				</div>
+				<h4 style="margin-top:40px;margin-bottom:12px;">{{draw.item_title}}</h4>
+				<h4>名额：{{draw.num}}位</h4>
 			</panel>
 		</div>
-		<div class="wrapper">
-			<panel class="main">
-				<div class="main">
-					<div class="top">
-						<h3> {{draws[currentPrize].title}}获奖者 </h3>
-						<avatar class="lg"
-						:src="winner.info.avatarUrl" 
-						:name="winner.info.name" 
-						></avatar>
-						<div class="controls">
-							<glass-button @click.native="play"> 1 </glass-button>
-							<glass-button @click.native="pause"> 2 </glass-button>
-							<glass-button @click.native="confirm"> 3 </glass-button>
-							<glass-button @click.native="play();pause();confirm();"> auto </glass-button>
-						</div>
-					</div>
-				</div>
+		<div class="wrapper main">
+			<panel class="main" :bg="mainBg">
+				<h3 style="margin-bottom:74px;"> {{draw.title}}获奖者 </h3>
+				<img class="crown" src="../assets/crown.png" @click="play">
+				<avatar class="xl" @click.native="pause"
+				:src="winner.info.avatarUrl" 
+				:name="winner.info.name" 
+				></avatar>
+				<h4 style="margin-top:46px;" @click="confirm">
+					<span style="color:#ffc107;">{{storedUsers.length}}人</span>参与本场抽奖
+				</h4>
 			</panel>
 		</div>
-		<div class="wrapper">
+		<div class="wrapper right">
 			<panel class="right">
-				<div class="side">
-					<h4>{{draw.title}}</h4>
-					<div class="grid">
+				<h3 style="margin-bottom: 22px;">中奖名单</h3>
+				<div class="grid">
+					<div class="row" v-for="winner in draw.winners" >
 						<avatar 
-						v-for="winner in draw.winners" 
+						:size="44"
 						:key="winner._id"
 						:src="winner.info.avatarUrl" 
-						:name="winner.info.name"
 						></avatar>
+						<span class="name">{{winner.info.name}}</span>
 					</div>
 				</div>
 			</panel>
@@ -131,6 +155,7 @@ import Honeycomb from '@/components/Honeycomb'
 import GlassButton from '@/components/GlassButton'
 import qrcode from '@/assets/qrcode.png'
 import avatarImg from '@/assets/avatar.png'
+import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
 import { getRandomInt } from '@/utils'
 import types from '../store/mutation-types'
@@ -141,6 +166,7 @@ export default {
 		return {
 			qrcode,
 			avatarImg,
+			prizeBg,
 			mainBg,
 			users: [
 				{
@@ -178,7 +204,7 @@ export default {
 			if (this.winnerIndex > lastIndex) this.winnerIndex = lastIndex
 			return this.isPlaying
 			? this.users[this.winnerIndex]
-			: lastWinner || this.users[this.winnerIndex]
+			: this.users[this.winnerIndex] || lastWinner
 		},
 		draw() {
 			return this.draws[this.currentPrize]
@@ -197,12 +223,6 @@ export default {
 	},
 	mounted () {
 		this.autoScroll()
-		// const width = this.$el.querySelector('.y-scroller').clientWidth
-		// const viewCols = Math.round(width / this.colWidth)
-		// only draw lottery from users in viewport
-		// this.lotteryStartIndex = (this.threshhold - this.swapColumn) * this.row
-		// this.lotteryEndIndex = this.lotteryStartIndex + viewCols * this.row
-		// TODO 当用户数量太少并不需要滚动的情况
 	},
 	watch: {
 		autoPlay(val) {
@@ -235,16 +255,9 @@ export default {
 			event.target.scrollLeft = (this.threshhold - this.swapColumn) * this.colWidth
 		},
 		play() {
+			console.log('play')
 			// 当名额满时不再进行
 			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
-			console.log('play')
-			this.autoPlay = false
-			this.scrollIntervalId = setInterval(() => {
-				this.$el.querySelector('.y-scroller').scrollBy({
-					left: 100,
-					behavior: 'smooth'
-				})
-			}, 80)
 			this.playIntervalId = setInterval(() => {
 				this.winnerIndex = getRandomInt(
 					this.lotteryStartIndex,
@@ -278,4 +291,3 @@ export default {
 	}
 }
 </script>
-

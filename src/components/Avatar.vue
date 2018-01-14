@@ -45,7 +45,7 @@ export default {
 <style lang="less" scoped>
 @import '../styles/variables';
 
-@xl-size: 120px;
+@xl-size: 170px;
 @lg-size: 100px;
 @md-size: 50px;
 @sm-size: 30px;
@@ -55,6 +55,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	img { display: block; }
 	.placeholder {
 		background-color: #d8d8d8;
 		opacity: 0.2;
@@ -69,7 +70,6 @@ export default {
 	img, .placeholder, &.md>img, &.md>.placeholder { height: @md-size; width: @md-size; }
 	&.sm>img, &.sm>.placeholder { height: @sm-size; width: @sm-size; }
 
-	&>.name {color: #fff4d4;}
 	&.xl>.name { margin-top: 40px; font-size: 24px;}
 	&.lg>.name { margin-top: 30px; font-size: 22px;}
 	.name, &.md>.name { margin-top: 4px; font-size: 12px;}
