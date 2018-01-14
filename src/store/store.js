@@ -9,7 +9,8 @@ import {to} from '../utils'
 import activity from './activity'
 
 Vue.use(VueResource)
-Vue.http.options.root = 'http://118.25.21.169:3000'
+// Vue.http.options.root = 'http://118.25.21.169:3000'
+Vue.http.options.root = 'https://activity.toyourcity.com'
 
 const usersResource = Vue.resource('users{/id}')
 
@@ -65,6 +66,8 @@ const store = new Vuex.Store({
 })
 
 // https
-Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
+// Vue.use(VueSocketio, 'https://activity.toyourcity.com', store)
 // Vue.use(VueSocketio, 'http://localhost:3000', store)
+// 用这个的话要用http访问
+Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
 export default store

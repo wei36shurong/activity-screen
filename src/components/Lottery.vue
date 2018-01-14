@@ -4,39 +4,12 @@
 		<glass>
 			<span slot="header">中奖名单</span>
 			<div class="side">
-				<h4>{{prizeName[0]}}</h4>
+				<h4>{{draw.title}}</h4>
 				<div class="grid">
 					<avatar 
-					v-for="winner in prizeWinners[0]" 
+					v-for="winner in draw.winners" 
 					:key="winner._id"
-					:src="winner.info.avatar_url" 
-					:name="winner.info.name"
-					></avatar>
-				</div>
-				<h4>{{prizeName[1]}}</h4>
-				<div class="grid">
-					<avatar 
-					v-for="winner in prizeWinners[1]" 
-					:key="winner._id"
-					:src="winner.info.avatar_url" 
-					:name="winner.info.name"
-					></avatar>
-				</div>
-				<h4>{{prizeName[2]}}</h4>
-				<div class="grid">
-					<avatar 
-					v-for="winner in prizeWinners[2]" 
-					:key="winner._id"
-					:src="winner.info.avatar_url" 
-					:name="winner.info.name"
-					></avatar>
-				</div>
-				<h4>{{prizeName[3]}}</h4>
-				<div class="grid">
-					<avatar 
-					v-for="winner in prizeWinners[3]" 
-					:key="winner._id"
-					:src="winner.info.avatar_url" 
+					:src="winner.info.avatarUrl" 
 					:name="winner.info.name"
 					></avatar>
 				</div>
@@ -49,21 +22,19 @@
 			<span slot="header-right">109人参与</span>
 			<div class="main">
 				<div class="top">
-					<h3> {{prizeName[currentPrize]}}获奖者 </h3>
+					<h3> {{draws[currentPrize].title}}获奖者 </h3>
 					<avatar class="lg"
-					:src="winner.info.avatar_url" 
+					:src="winner.info.avatarUrl" 
 					:name="winner.info.name" 
 					></avatar>
-					<glass-button @click.native="isPlaying ? pause() : play()">
-						{{ isPlaying ? '停止抽奖' : '开始抽奖' }}
-					</glass-button>
+					<glass-button @click.native="play();pause();confirm();"> 开始抽奖 </glass-button>
 				</div>
 				<div class="y-scroller" v-scroll="onScroll">
 					<honeycomb :class="`row-${row}`" :colWidth="colWidth">
-						<div v-for="(user, index) in users" :key="user._id">
+						<div v-for="(user, index) in users">
 							<avatar class="sm"
 							:class="{selected: index == winnerIndex}"
-							:src="user.info.avatar_url" 
+							:src="user.info.avatarUrl" 
 							></avatar>
 						</div>
 					</honeycomb>
@@ -109,16 +80,16 @@ export default {
 			intervalId: '',
 			lotteryStartIndex: 0,
 			isPlaying: false,
-			currentPrize: 2
+			currentPrize: 3
 		}
 	},
 	computed: {
 		...mapState('activity', {
 			storedUsers: 'users'
 		}),
+		...mapState('activity', ['draws']),
 		...mapGetters('activity', ['prizeWinners']),
 		// TODO 修改成从activity module里取
-		...mapState([ 'prizeNum', 'prizeName' ]),
 		winner() {
 			const currentPrizeWinners = this.prizeWinners[this.currentPrize]
 			const lastWinner = currentPrizeWinners[currentPrizeWinners.length - 1]
@@ -129,11 +100,20 @@ export default {
 			? this.users[this.winnerIndex]
 			: lastWinner || this.users[this.winnerIndex]
 		},
+		draw() {
+			return this.draws[this.currentPrize]
+		},
 		lotteryEndIndex() { return this.users.length - 1 }
 	},
 	async created () {
-		// await this.$store.dispatch('getAllUsers')
+		// TODO delele
+		await this.$store.dispatch('activity/getActivity')
+		await this.$store.dispatch('activity/getUsers')
+
 		this.users = this.storedUsers
+
+		// init curretn prize level to last draw
+		this.currentPrize = this.draws.length - 1
 	},
 	mounted () {
 		this.autoScroll()
@@ -176,7 +156,7 @@ export default {
 		},
 		play() {
 			// 当名额满时不再进行
-			if (this.prizeWinners[this.currentPrize].length >= this.prizeNum[this.currentPrize]) return
+			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
 			console.log('play')
 			this.autoPlay = false
 			this.scrollIntervalId = setInterval(() => {
@@ -200,12 +180,14 @@ export default {
 			this.isPlaying = false
 		},
 		confirm() {
+			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
 			this.$store.commit(`activity/${types.ADD_WINNER}`, {
 				level: this.currentPrize,
 				user: this.winner
 			})
 			this.users.splice(this.winnerIndex, 1)
-			if (this.prizeWinners[this.currentPrize].length >= this.prizeNum[this.currentPrize] && this.currentPrize > 0) this.currentPrize--
+			// 当名额满时跳到下一个
+			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num && this.currentPrize > 0) this.currentPrize--
 		}
 	},
 	sockets: {

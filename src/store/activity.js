@@ -7,6 +7,7 @@ import {to} from '../utils'
 Vue.use(VueResource)
 const activitiesResource = Vue.resource('activities{/id}')
 const activityUsersResource = Vue.resource('activities{/id}/users')
+const activityVotesResource = Vue.resource('activities{/id}/votes')
 
 export default {
 	namespaced: true,
@@ -19,7 +20,7 @@ export default {
 		},
 		voteNum: state => (groupIndex, candidateIndex) => {
 			const option = state.votes[groupIndex].options[candidateIndex]
-			const length = option.voters.length
+			const length = option.voters ? option.voters.length : 0
 			const votersCount = option.voters_count
 			return votersCount || length + option.bonus
 		},
@@ -28,6 +29,9 @@ export default {
 		prizeWinners: state => state.draws.map(item => item.winners)
 	},
 	mutations: {
+		LOAD_VOTES (state, votes) {
+			state.votes = votes
+		},
 		LOAD_USERS (state, users) {
 			state.users = users
 		},
@@ -45,6 +49,14 @@ export default {
 		}
 	},
 	actions: {
+		getVotes: ({commit, state}) => {
+			return new Promise(async (resolve, reject) => {
+				const id = state._id
+				const {body: votes} = await activityVotesResource.get({id})
+				commit('LOAD_VOTES', votes)
+				resolve()
+			})
+		},
 		getUsers: ({commit, state}) => {
 			return new Promise(async (resolve, reject) => {
 				const id = state._id
@@ -57,8 +69,7 @@ export default {
 		getActivity: ({commit, state}) => {
 			return new Promise(async (resolve, reject) => {
 				const id = state._id
-				const [err, {body: activity}] = await to(activitiesResource.get({id}))
-				if (err) return
+				const {body: activity} = await activitiesResource.get({id})
 				commit('LOAD_ACTIVITY', activity, { root: true })
 				resolve()
 			})

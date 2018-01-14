@@ -1,13 +1,10 @@
 <template>
 <div class="vote">
-	<vote-before 
-	v-if="voteStatus(groupIndex) == 0" 
+	<vote-before v-if="localVote.status == 0" 
 	:group-index="groupIndex"></vote-before>
-	<vote-during 
-	v-if="voteStatus(groupIndex) == 1"
+	<vote-during v-if="localVote.status == 1"
 	:group-index="groupIndex"></vote-during>
-	<vote-during 
-	v-if="voteStatus(groupIndex) == 2"
+	<vote-during v-if="localVote.status == 2"
 	:group-index="groupIndex"></vote-during>
 </div>
 </template>
@@ -21,15 +18,16 @@ export default {
 	components: {VoteBefore, VoteDuring},
 	computed: {
 		...mapState('activity', ['votes']),
-		...mapGetters('activity', [ 'voteStatus' ])
-	},
-	props: ['groupIndex'],
-	data () {
-		return {
+		...mapGetters('activity', [ 'voteStatus' ]),
+		localVote () {
+			return this.votes[this.groupIndex]
 		}
 	},
-	async created () {
-		await this.$store.dispatch('activity/getActivity')
+	props: ['groupIndex'],
+	watch: {
+		async groupIndex() {
+			await this.$store.dispatch('activity/getVotes')
+		}
 	}
 }
 </script>

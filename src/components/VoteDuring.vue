@@ -7,7 +7,7 @@
 			<div class="row-inner">
 				<avatar class="lg" :src="candidate.image_url" :name="candidate.title"></avatar>
 				<div class="bar-container">
-					<bar :value="voteNums[candidateIndex]" :max="userNum"></bar>
+					<bar :value="voteNums[candidateIndex]" :max="userNum + candidate.bonus"></bar>
 				</div>
 			</div>
 		</div>

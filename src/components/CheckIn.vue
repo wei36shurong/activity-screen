@@ -13,7 +13,7 @@
 		:name='newUser.info.nickName' 
 		></avatar>
 		<honeycomb class='row-12' :colWidth='40'>
-			<div v-for='(user, index) in users' :key='user._id'>
+			<div v-for='(user, index) in users'>
 				<avatar class='sm'
 				:src='user.info.avatarUrl' 
 				></avatar>
@@ -30,7 +30,6 @@ import Avatar from '@/components/Avatar'
 import qrcode from '@/assets/qrcode.png'
 import avatarImg from '@/assets/avatar.png'
 import Honeycomb from '@/components/Honeycomb'
-// import userState from '@/store/user-state'
 
 export default {
 	name: 'CheckIn',
@@ -51,8 +50,8 @@ export default {
 		}
 	},
 	async created () {
+		await this.$store.dispatch('activity/getActivity')
 		await this.$store.dispatch('activity/getUsers')
-		// this.users = this.storedUsers
 	}
 }
 </script>

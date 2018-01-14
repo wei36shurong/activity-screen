@@ -1,11 +1,14 @@
 /* eslint-disable */
 export default {
-  "_id": "5a530be1c327ca1ea4d79023",
+  "_id": "5a59a9c43926a5788cf6fd96",
   "config":{
     "title":"2017年福信集团年会",
     "adress":"暂无地址",
-    "headImg_url":"http://image.yylhealth.com/%E5%A4%B4%E5%9B%BE.png",
-    "backgroundImg_url":"http://image.yylhealth.com/%E5%96%9C%E8%BF%8E%E5%8D%8E%E8%AF%9E.jpeg",
+    headImg_url: "http://image.yylhealth.com/head-img.jpeg",
+    coverImg_url: "http://image.yylhealth.com/cover-img.jpeg",
+    // TODO 用js写进根组件里
+    backgroundImg_url: "http://image.yylhealth.com/fx-background.jpeg",
+    voteBackgroundImg_url: "http://image.yylhealth.com/fx-sing.jpeg",
     "longitude":"",
     "latitude":"",
     "checkInControl":"none"
@@ -20,7 +23,7 @@ export default {
         "city":"Xiamen",
         "province":"Fujian",
         "country":"China",
-        "avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIQnLj91w2kibylwSeMhyxF6tsKpiarJDZTediaUh0POkrOIOzoTJLozK48STCzNYvI9G6n5VUtNFpLQ/0",
+        "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIQnLj91w2kibylwSeMhyxF6tsKpiarJDZTediaUh0POkrOIOzoTJLozK48STCzNYvI9G6n5VUtNFpLQ/0",
         "name":"魏澍榕"
       },
       "openid":"oxgz60Lso90sxKr56lptK0-MP_oE"

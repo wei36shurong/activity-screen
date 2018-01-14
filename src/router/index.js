@@ -9,6 +9,7 @@ Vue.use(Router)
 
 export default new Router({
 	routes: [
+		{ path: '/', redirect: '/check-in' },
 		{
 			path: '/check-in',
 			component: CheckIn
