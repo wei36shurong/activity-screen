@@ -20,15 +20,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state,
 	modules: { activity },
-	getters: {
-		getCandidateByName: (state) => (name) => {
-			return state.candidates.find(p => p.name == name) || null
-		},
-		getVoteNumByName: (state) => (name) => {
-			const candidate = state.candidates.find(p => p.name == name) || []
-			return candidate.voters.length
-		}
-	},
 	mutations: {
 		LOAD_USERS (state, users) {
 			this.state.users = users
@@ -73,5 +64,5 @@ const store = new Vuex.Store({
 // Vue.use(VueSocketio, 'https://activity.toyourcity.com', store)
 // Vue.use(VueSocketio, 'http://localhost:3000', store)
 // 用这个的话要用http访问
-// Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
+Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
 export default store

@@ -17,6 +17,7 @@ export default {
     {
       "_id":"5a56fb52ad50757601370eb9",
       "info":{
+        "name":"魏澍榕",
         "nickName":"魏澍榕",
         "gender":1,
         "language":"zh_CN",

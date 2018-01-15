@@ -83,14 +83,15 @@
 									<bar :height="40" unit="分" 
 									:numStyle="{color: '#fff4d4', fontSize: '30px'}"
 									:value="voteNum(groupIndex, candidateIndex)" 
-									:max="userNum + candidate.bonus"/>
+									:max="800" />
+									<!-- :max="userNum + candidate.bonus" /> -->
 								</div>
 								<p>{{candidate.title}}</p>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="side" style="color:#fff4d4;">
+				<div class="side" style="color:#fff4d4;width:10em;">
 					<p style="font-size:40px;">
 						<span style="color:#ffc107;">{{totalVoteNum}}/</span>{{userNum}}人
 					</p>
@@ -119,7 +120,8 @@ export default {
 		totalVoteNum () {
 			let total = 0
 			for (let i = 0; i < this.localCandidates.length; i++) {
-				total = this.voteNum(this.groupIndex, 0)
+				const votersCount = this.voteNum(this.groupIndex, i) - this.localCandidates[i].bonus
+				total = total + votersCount
 			}
 			return total
 		},

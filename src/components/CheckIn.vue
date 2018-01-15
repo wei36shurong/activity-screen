@@ -26,11 +26,7 @@
 		}
 	}
 }
-h3 {
-	color: #fff4d4;
-	margin-top: 50px;
-	margin-bottom: 25px;
-}
+
 .panel.side /deep/ .content { background-color: #ff780099; }
 .panel.main /deep/ .content { background-color: #c5000bc0; }
 
@@ -51,10 +47,10 @@ h3 {
 		</div>
 		<div class="wrapper">
 			<panel class="main" :bg="mainBg">
-				<h3 @click="checkIn">热烈欢迎</h3>
+				<h3 style="margin-top:50px;" @click="checkIn">热烈欢迎</h3>
 				<avatar class='lg'
 				:src='newUser.info.avatarUrl' 
-				:name="newUser.info.nickName || ''" 
+				:name="newUser.info.name || ''" 
 				></avatar>
 				<p style="margin-top:20px;font-size:20px;color:#ffc107;">
 					已有<span style="color:#ffd797;">{{users.length}}</span>人签到入场

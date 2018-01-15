@@ -22,13 +22,22 @@ export default {
 			const option = state.votes[groupIndex].options[candidateIndex]
 			const length = option.voters ? option.voters.length : 0
 			const votersCount = option.voters_count
-			return votersCount || length + option.bonus
+			const voteNum = votersCount || (length + option.bonus)
+			return voteNum
+		},
+		voteWinner: (state, getters) => groupIndex => {
+			return state.votes[groupIndex].options.reduce((winner, option) => {
+				const currentCount = (option.voters_count || option.voters.length) + option.bonus
+				const winnerCount = (winner.voters_count || winner.voters.length) + winner.bonus
+				return currentCount > winnerCount ? option : winner
+			})
 		},
 		candidates: state => groupIndex => state.votes[groupIndex].options,
 		userNum: state => state.users.length,
 		prizeWinners: state => state.draws.map(item => item.winners)
 	},
 	mutations: {
+		// this.commit 的会跑在记录里，socket的不行
 		LOAD_VOTES (state, votes) {
 			state.votes = votes
 		},
@@ -42,8 +51,10 @@ export default {
 		ADD_WINNER (state, {level, user}) {
 			state.draws[level].winners.push(user)
 		},
-		ADD_VOTER (state, {vote_index, option_index, voters_count}) {
+		ADD_VOTER (state, {vote_index, option_index, voters_count, bonus}) {
+			console.log('bonus', bonus)
 			Vue.set(state.votes[vote_index].options[option_index], 'voters_count', voters_count)
+			Vue.set(state.votes[vote_index].options[option_index], 'bonus', bonus)
 		},
 		SET_VOTE_STATUS (state, {vote_index, status}) {
 			Vue.set(state.votes[vote_index], 'status', status)

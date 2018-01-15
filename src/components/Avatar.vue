@@ -74,7 +74,7 @@ export default {
 	img, .placeholder, &.md>img, &.md>.placeholder { height: @md-size; width: @md-size; }
 	&.sm>img, &.sm>.placeholder { height: @sm-size; width: @sm-size; }
 
-	&.xl>.name { margin-top: 40px; font-size: 24px;}
+	&.xl>.name { margin-top: 24px; font-size: 24px;}
 	&.lg>.name { margin-top: 30px; font-size: 22px;}
 	.name, &.md>.name { margin-top: 4px; font-size: 12px;}
 	&.sm>.name { margin-top: 4px; font-size: 12px;}

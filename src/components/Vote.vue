@@ -4,8 +4,8 @@
 	:group-index="groupIndex"></vote-before>
 	<vote-during v-if="localVote.status == 1"
 	:group-index="groupIndex"></vote-during>
-	<vote-during v-if="localVote.status == 2"
-	:group-index="groupIndex"></vote-during>
+	<vote-end v-if="localVote.status == 2"
+	:group-index="groupIndex"></vote-end>
 </div>
 </template>
 
@@ -13,9 +13,10 @@
 import { mapState, mapGetters } from 'vuex'
 import VoteBefore from '@/components/VoteBefore'
 import VoteDuring from '@/components/VoteDuring'
+import VoteEnd from '@/components/VoteEnd'
 export default {
 	name: 'Vote',
-	components: {VoteBefore, VoteDuring},
+	components: {VoteBefore, VoteDuring, VoteEnd},
 	computed: {
 		...mapState('activity', ['votes']),
 		...mapGetters('activity', [ 'voteStatus' ]),

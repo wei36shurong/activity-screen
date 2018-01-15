@@ -69,6 +69,8 @@ h4 { font-size: 20px;}
 	border: 15px solid #ffc107;
 	box-shadow: 0 0 60px 0px #000000ad;
 }
+
+
 // TODO
 .wrapper.main {
 	position: relative;
@@ -123,7 +125,7 @@ h4 { font-size: 20px;}
 				:src="winner.info.avatarUrl" 
 				:name="winner.info.name" 
 				></avatar>
-				<h4 style="margin-top:46px;" @click="confirm">
+				<h4 style="margin-top:40px;" @click="confirm">
 					<span style="color:#ffc107;">{{storedUsers.length}}人</span>参与本场抽奖
 				</h4>
 			</panel>
@@ -209,7 +211,10 @@ export default {
 		draw() {
 			return this.draws[this.currentPrize]
 		},
-		lotteryEndIndex() { return this.users.length - 1 }
+		lotteryEndIndex() {
+			const end = this.users.length - 1
+			return end >= 0 ? end : 0
+		}
 	},
 	async created () {
 		// TODO delele
@@ -264,7 +269,7 @@ export default {
 					this.lotteryStartIndex,
 					this.lotteryEndIndex
 				)
-			}, 200)
+			}, 100)
 			this.isPlaying = true
 		},
 		pause() {
