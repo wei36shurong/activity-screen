@@ -31,7 +31,8 @@ export default {
 			threshhold: 10, // cols
 			swapColumn: 3, // cols
 			intervalId: '',
-			localUsers
+			localUsers,
+			hasLoaded: false
 		}
 	},
 	props: {
@@ -47,6 +48,7 @@ export default {
 		}
 	},
 	computed: {
+		// 还有的空格的index
 		emptyUserIndexes() {
 			let indexes = []
 			this.localUsers.forEach((user, index) => {
@@ -58,12 +60,6 @@ export default {
 	},
 	mounted () {
 		if (this.autoPlay) this.autoScroll()
-		// only draw lottery from users in viewport
-		// const width = this.$el.querySelector('.y-scroller').clientWidth
-		// const viewCols = Math.round(width / this.colWidth)
-		// this.lotteryStartIndex = (this.threshhold - this.swapColumn) * this.row
-		// this.lotteryEndIndex = this.lotteryStartIndex + viewCols * this.row
-		// TODO 当用户数量太少并不需要滚动的情况
 	},
 	watch: {
 		autoPlay(val) {
@@ -71,9 +67,9 @@ export default {
 			if (val) this.autoScroll()
 		},
 		users() {
-			this.users.length >= this.localUsers.length
-			? this.localUsers = [...this.users] // 防止错误的更新
-			: this.users.forEach(user => { this.randomInsertUser(user) })
+			if (this.hasLoaded) return
+			console.log('update local users')
+			this.users.forEach(user => { this.randomInsertUser(user) })
 		},
 		newUser(user) {
 			this.randomInsertUser(user)
@@ -81,7 +77,9 @@ export default {
 	},
 	methods: {
 		randomInsertUser (user) {
+			this.hasLoaded = true
 			const length = this.emptyUserIndexes.length
+			// 当空格都被填满，插入到最前
 			if (!length) { this.localUsers.unshift(user); return }
 			const randomIndex = this.emptyUserIndexes[getRandomInt(0, length - 1)]
 			this.localUsers.splice(randomIndex, 1, user)

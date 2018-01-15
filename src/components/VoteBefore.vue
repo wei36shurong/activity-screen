@@ -1,6 +1,4 @@
-<style lang="less">
-@import '../styles/base';
-@import '../styles/extends';
+<style lang="less" scoped>
 .container {
 	padding-top: 238px;
 	position: relative;

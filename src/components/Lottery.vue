@@ -161,6 +161,7 @@ import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
 import { getRandomInt } from '@/utils'
 import types from '../store/mutation-types'
+import emptyUserState from '@/store/user-state'
 export default {
 	name: 'Lottery',
 	components: { Panel, Avatar, Honeycomb, GlassButton },
@@ -188,6 +189,7 @@ export default {
 			intervalId: '',
 			lotteryStartIndex: 0,
 			isPlaying: false,
+			isWaiting: true, // 等待开始抽奖
 			currentPrize: 3
 		}
 	},
@@ -204,6 +206,7 @@ export default {
 			// 随机到最后一个的情况, 防止出错
 			const lastIndex = this.users.length - 1
 			if (this.winnerIndex > lastIndex) this.winnerIndex = lastIndex
+			if (this.isWaiting) return emptyUserState
 			return this.isPlaying
 			? this.users[this.winnerIndex]
 			: this.users[this.winnerIndex] || lastWinner
@@ -222,7 +225,6 @@ export default {
 		await this.$store.dispatch('activity/getUsers')
 
 		this.users = this.storedUsers
-
 		// init curretn prize level to last draw
 		this.currentPrize = this.draws.length - 1
 	},
@@ -260,17 +262,21 @@ export default {
 			event.target.scrollLeft = (this.threshhold - this.swapColumn) * this.colWidth
 		},
 		play() {
-			console.log('play')
+			this.isWaiting = false
+			// 不重复播放
 			if (this.isPlaying) return
-			// 当名额满时不再进行
-			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
+			this.isPlaying = true
+			console.log('play')
+			// 当名额满时跳到下一个
+			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num && this.currentPrize > 0) this.currentPrize--
+			// 当都抽完时不再进行
+			if (this.currentPrize < 0) return
 			this.playIntervalId = setInterval(() => {
 				this.winnerIndex = getRandomInt(
 					this.lotteryStartIndex,
 					this.lotteryEndIndex
 				)
-			}, 100)
-			this.isPlaying = true
+			}, 50)
 		},
 		pause() {
 			console.log('pause')
@@ -285,8 +291,6 @@ export default {
 				user: this.winner
 			})
 			this.users.splice(this.winnerIndex, 1)
-			// 当名额满时跳到下一个
-			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num && this.currentPrize > 0) this.currentPrize--
 		}
 	},
 	sockets: {

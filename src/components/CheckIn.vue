@@ -47,7 +47,7 @@
 		</div>
 		<div class="wrapper">
 			<panel class="main" :bg="mainBg">
-				<h3 style="margin-top:50px;" @click="checkIn">热烈欢迎</h3>
+				<h3 style="margin-top:50px;margin-bottom:30px;" @click="checkIn">热烈欢迎</h3>
 				<avatar class='lg'
 				:src='newUser.info.avatarUrl' 
 				:name="newUser.info.name || ''" 
