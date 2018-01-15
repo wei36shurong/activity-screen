@@ -53,7 +53,7 @@ h3 {
 		<div class="wrapper">
 			<panel class="main" :bg="mainBg">
 			<!-- <panel class="main" style="background-image:url(../assets/check-in-main-panel-bg.png)"> -->
-				<h3>热烈欢迎</h3>
+				<h3 @click="checkIn">热烈欢迎</h3>
 				<avatar class='lg'
 				:src='newUser.info.avatarUrl' 
 				:name='newUser.info.nickName' 
@@ -80,6 +80,7 @@ import mainBg from '@/assets/check-in-main-panel-bg.png'
 import avatarImg from '@/assets/avatar.png'
 import Honeycomb from '@/components/Honeycomb'
 import HoneycombScroller from '@/components/HoneycombScroller'
+import userState from '@/store/user-state-example'
 
 export default {
 	name: 'CheckIn',
@@ -92,15 +93,21 @@ export default {
 		}
 	},
 	computed: {
-		...mapState('activity', [ 'users' ]),
-		newUser () {
-			const emptyUser = { info: { avatarUrl: '', nickName: '' } }
-			return this.users[0] || emptyUser
-		}
+		...mapState('activity', ['users', 'newUser'])
+		// ...mapState([ 'newUser' ])
+		// newUser () {
+		// 	const emptyUser = { info: { avatarUrl: '', nickName: '' } }
+		// 	return this.users[0] || emptyUser
+		// }
 	},
 	async created () {
 		await this.$store.dispatch('activity/getActivity')
-		await this.$store.dispatch('activity/getUsers')
+	},
+	methods: {
+		checkIn () {
+			console.log('check in')
+			this.$store.commit('activity/ADD_USER', userState)
+		}
 	}
 }
 </script>

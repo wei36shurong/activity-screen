@@ -7,6 +7,7 @@ import router from '@/router/index'
 import {to} from '../utils'
 // import types from './mutation-types'
 import activity from './activity'
+import userState from './user-state'
 
 Vue.use(VueResource)
 // Vue.http.options.root = 'http://118.25.21.169:3000'
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
 			this.state.users = users
 		},
 		LOAD_ACTIVITY (state, activity) {
+			activity.newUser = userState
+			// 清空只有id的初始users
+			activity.users = []
 			state.activity = activity
 		},
 		// emitted by socket

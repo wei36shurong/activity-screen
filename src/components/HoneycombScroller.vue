@@ -33,7 +33,7 @@ export default {
 			default: [{
 				_id: '',
 				info: {
-					avatar_url: '',
+					avatarUrl: '',
 					name: ''
 				}
 			}]
@@ -68,7 +68,7 @@ export default {
 		autoScroll() {
 			// const scroller = this.$el.querySelector('.y-scroller')
 			const scroller = this.$el
-			if (!scroller) return
+			if (!scroller.scrollBy) return
 			this.autoScrollIntervalId = setInterval(() => {
 				scroller.scrollBy({
 					left: 1,

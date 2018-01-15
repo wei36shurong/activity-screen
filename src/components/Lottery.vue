@@ -256,6 +256,7 @@ export default {
 		},
 		play() {
 			console.log('play')
+			if (this.isPlaying) return
 			// 当名额满时不再进行
 			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
 			this.playIntervalId = setInterval(() => {
