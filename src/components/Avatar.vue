@@ -20,7 +20,7 @@
 
 	<span 
 	class="name" 
-	v:if="name"> 
+	v-if="name"> 
 	{{name}} 
 	</span>
 
@@ -55,7 +55,10 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	img { display: block; }
+	img { 
+		box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.4);
+		display: block; 
+	}
 	.placeholder {
 		background-color: #b60007;
 		// background-color: #d8d8d8;

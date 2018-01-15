@@ -18,7 +18,7 @@ import Honeycomb from '@/components/Honeycomb'
 import {getRandomInt} from '@/utils'
 
 let localUsers = []
-for (let i = 0; i < 99; i++) {
+for (let i = 0; i < 200; i++) {
 	localUsers.push(userState)
 }
 
@@ -70,20 +70,22 @@ export default {
 			clearTimeout(this.autoScrollIntervalId)
 			if (val) this.autoScroll()
 		},
-		users(users) {
-			// this.localUsers = users
+		users() {
+			this.users.length >= this.localUsers.length
+			? this.localUsers = [...this.users] // 防止错误的更新
+			: this.users.forEach(user => { this.randomInsertUser(user) })
 		},
 		newUser(user) {
-			const length = this.emptyUserIndexes.length
-			const randomIndex = this.emptyUserIndexes[getRandomInt(0, length - 1)]
-			console.log(randomIndex)
-			this.localUsers.splice(randomIndex, 1, user)
-			if (!length) {
-				this.localUsers.unshift(user)
-			}
+			this.randomInsertUser(user)
 		}
 	},
 	methods: {
+		randomInsertUser (user) {
+			const length = this.emptyUserIndexes.length
+			if (!length) { this.localUsers.unshift(user); return }
+			const randomIndex = this.emptyUserIndexes[getRandomInt(0, length - 1)]
+			this.localUsers.splice(randomIndex, 1, user)
+		},
 		autoScroll() {
 			// const scroller = this.$el.querySelector('.y-scroller')
 			const scroller = this.$el
@@ -92,7 +94,7 @@ export default {
 				scroller.scrollBy({
 					left: 4
 				})
-			}, 50)
+			}, 20)
 		},
 		onScroll(event, {scrollLeft}) {
 			const currentCol = scrollLeft / this.colWidth

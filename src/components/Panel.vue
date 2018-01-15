@@ -68,11 +68,14 @@ export default {
 .content {
 	border-bottom-left-radius: @radius;
 	border-bottom-right-radius: @radius;
+	// TODO
+	box-shadow: 0 0 12px rgba(0,0,0,.1);
 	&.without-header {
 		border-top-left-radius: @radius;
 		border-top-right-radius: @radius;
 	}
 	background-repeat: no-repeat;
+	background-size: contain;
 }
 .header {
 	border-top-left-radius: @radius;

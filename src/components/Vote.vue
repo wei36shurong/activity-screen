@@ -28,6 +28,9 @@ export default {
 		async groupIndex() {
 			await this.$store.dispatch('activity/getVotes')
 		}
+	},
+	async created () {
+		await this.$store.dispatch('activity/getActivity')
 	}
 }
 </script>

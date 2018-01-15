@@ -10,15 +10,9 @@
 	align-items: center;
 	justify-content: center;
 }
-h3 {
-	color: #fff4d4;
-	margin-top: 50px;
-	margin-bottom: 25px;
-}
 .check-in {
 	display: grid;
 	grid-template-columns: 380px 1080px;
-	// grid-auto-rows: 550px;
 	grid-template-rows: 550px;
 	grid-column-gap: 20px;
 	.wrapper {
@@ -31,6 +25,11 @@ h3 {
 			right: 0;
 		}
 	}
+}
+h3 {
+	color: #fff4d4;
+	margin-top: 50px;
+	margin-bottom: 25px;
 }
 .panel.side /deep/ .content { background-color: #ff780099; }
 .panel.main /deep/ .content { background-color: #c5000bc0; }
@@ -52,11 +51,10 @@ h3 {
 		</div>
 		<div class="wrapper">
 			<panel class="main" :bg="mainBg">
-			<!-- <panel class="main" style="background-image:url(../assets/check-in-main-panel-bg.png)"> -->
 				<h3 @click="checkIn">热烈欢迎</h3>
 				<avatar class='lg'
 				:src='newUser.info.avatarUrl' 
-				:name='newUser.info.nickName' 
+				:name="newUser.info.nickName || ''" 
 				></avatar>
 				<p style="margin-top:20px;font-size:20px;color:#ffc107;">
 					已有<span style="color:#ffd797;">{{users.length}}</span>人签到入场

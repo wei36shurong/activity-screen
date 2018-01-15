@@ -1,6 +1,6 @@
 <template>
 <div class="bar">
-	<div class="bar-outter">
+	<div class="bar-outter" :style="{height: `${height}px`}">
 		<div class="bar-inner" 
 		:style="{
 			width: `${radio}%`,
@@ -9,19 +9,26 @@
 		>
 		</div>
 	</div>
-	<div class="number">{{value}}</div>
+	<div class="number" :style="numStyle">{{value}}{{unit}}</div>
 </div>
 </template>
 
 <script>
+// TODO 一次性加多分的动效
 export default {
 	name: 'Bar',
 	props: {
 		value: Number,
+		unit: String,
 		max: Number,
+		numStyle: Object,
 		color: {
 			type: String,
 			default: 'orange'
+		},
+		height: {
+			default: 25,
+			type: Number
 		}
 	},
 	computed: {
@@ -34,7 +41,6 @@ export default {
 
 <style lang="less" scoped>
 @import '../styles/variables';
-@height: 25px;
 
 .bar {
 	width: 100%;
@@ -43,11 +49,10 @@ export default {
 	.bar-outter {
 		position: relative;
 		flex: 1;
-		height: @height;
 		background-color: @glass-color;
 		.bar-inner {
 			position: absolute;
-			height: @height;
+			height: 100%;
 		}
 	}
 	.number {

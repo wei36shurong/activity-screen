@@ -72,7 +72,7 @@ export default {
 				const id = state._id
 				const {body: activity} = await activitiesResource.get({id})
 				commit('LOAD_ACTIVITY', activity, { root: true })
-				// await dispatch('getUsers')
+				await dispatch('getUsers')
 				resolve()
 			})
 		}

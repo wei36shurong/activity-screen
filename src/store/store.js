@@ -73,5 +73,5 @@ const store = new Vuex.Store({
 // Vue.use(VueSocketio, 'https://activity.toyourcity.com', store)
 // Vue.use(VueSocketio, 'http://localhost:3000', store)
 // 用这个的话要用http访问
-Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
+// Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
 export default store
