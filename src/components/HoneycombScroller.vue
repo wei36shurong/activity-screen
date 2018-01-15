@@ -1,7 +1,7 @@
 <template>
 	<div class="honeycomb-scroller y-scroller" v-scroll="onScroll">
 		<honeycomb :class="`row-${row}`" :colWidth="colWidth">
-			<div v-for="(user, index) in users">
+			<div v-for="(user, index) in localUsers">
 				<avatar class="md"
 				:src="user.info.avatarUrl" 
 				></avatar>
@@ -11,33 +11,32 @@
 </template>
 
 <script>
+import userState from '@/store/user-state'
 import Glass from '@/components/Glass'
 import Avatar from '@/components/Avatar'
 import Honeycomb from '@/components/Honeycomb'
+import {getRandomInt} from '@/utils'
+
+let localUsers = []
+for (let i = 0; i < 99; i++) {
+	localUsers.push(userState)
+}
+
 export default {
 	name: 'HoneycombScroller',
 	components: { Glass, Avatar, Honeycomb },
 	data () {
 		return {
 			colWidth: 65,
-			threshhold: 2,
-			swapColumn: 6,
-			currentAutoPlay: true,
-			intervalId: ''
-			// lotteryStartIndex: 0
+			threshhold: 10, // cols
+			swapColumn: 3, // cols
+			intervalId: '',
+			localUsers
 		}
 	},
 	props: {
-		users: {
-			type: Array,
-			default: [{
-				_id: '',
-				info: {
-					avatarUrl: '',
-					name: ''
-				}
-			}]
-		},
+		users: {...userState},
+		newUser: {...userState},
 		row: {
 			type: Number,
 			default: 6
@@ -47,7 +46,15 @@ export default {
 			default: true
 		}
 	},
-	async created () {
+	computed: {
+		emptyUserIndexes() {
+			let indexes = []
+			this.localUsers.forEach((user, index) => {
+				if (user._id) return
+				indexes.push(index)
+			})
+			return indexes
+		}
 	},
 	mounted () {
 		if (this.autoPlay) this.autoScroll()
@@ -59,9 +66,21 @@ export default {
 		// TODO 当用户数量太少并不需要滚动的情况
 	},
 	watch: {
-		currentAutoPlay(val) {
+		autoPlay(val) {
 			clearTimeout(this.autoScrollIntervalId)
 			if (val) this.autoScroll()
+		},
+		users(users) {
+			// this.localUsers = users
+		},
+		newUser(user) {
+			const length = this.emptyUserIndexes.length
+			const randomIndex = this.emptyUserIndexes[getRandomInt(0, length - 1)]
+			console.log(randomIndex)
+			this.localUsers.splice(randomIndex, 1, user)
+			if (!length) {
+				this.localUsers.unshift(user)
+			}
 		}
 	},
 	methods: {
@@ -71,20 +90,19 @@ export default {
 			if (!scroller.scrollBy) return
 			this.autoScrollIntervalId = setInterval(() => {
 				scroller.scrollBy({
-					left: 1,
-					behavior: 'smooth'
+					left: 4
 				})
 			}, 50)
 		},
 		onScroll(event, {scrollLeft}) {
 			const currentCol = scrollLeft / this.colWidth
 			if (currentCol < this.threshhold) return
-			let users = this.users
+			let localUsers = this.localUsers
 			const swapNum = this.row * this.swapColumn
-			const swap = users.slice(0, swapNum)
-			users.splice(0, swapNum)
-			users.splice(users.length - 1, 0, ...swap)
-			this.users = users
+			const swap = localUsers.slice(0, swapNum)
+			localUsers.splice(0, swapNum)
+			localUsers.splice(localUsers.length - 1, 0, ...swap)
+			this.localUsers = localUsers
 			event.target.scrollLeft = (this.threshhold - this.swapColumn) * this.colWidth
 		}
 	}

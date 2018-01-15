@@ -63,6 +63,7 @@ h3 {
 				</p>
 				<honeycomb-scroller style="margin-top:15px;" 
 				:row="3" 
+				:newUser="newUser"
 				:colWidth='40' 
 				:users="users" />
 			</panel>
@@ -81,6 +82,7 @@ import avatarImg from '@/assets/avatar.png'
 import Honeycomb from '@/components/Honeycomb'
 import HoneycombScroller from '@/components/HoneycombScroller'
 import userState from '@/store/user-state-example'
+import {getRandomInt} from '@/utils'
 
 export default {
 	name: 'CheckIn',
@@ -94,18 +96,13 @@ export default {
 	},
 	computed: {
 		...mapState('activity', ['users', 'newUser'])
-		// ...mapState([ 'newUser' ])
-		// newUser () {
-		// 	const emptyUser = { info: { avatarUrl: '', nickName: '' } }
-		// 	return this.users[0] || emptyUser
-		// }
 	},
 	async created () {
 		await this.$store.dispatch('activity/getActivity')
 	},
 	methods: {
 		checkIn () {
-			console.log('check in')
+			userState._id = getRandomInt(0, 1000)
 			this.$store.commit('activity/ADD_USER', userState)
 		}
 	}

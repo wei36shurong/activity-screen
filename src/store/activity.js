@@ -37,7 +37,7 @@ export default {
 		},
 		ADD_USER (state, user) {
 			state.users.unshift(user)
-			state.newUser = user
+			state.newUser = {...user}
 		},
 		ADD_WINNER (state, {level, user}) {
 			state.draws[level].winners.push(user)
@@ -72,7 +72,7 @@ export default {
 				const id = state._id
 				const {body: activity} = await activitiesResource.get({id})
 				commit('LOAD_ACTIVITY', activity, { root: true })
-				await dispatch('getUsers')
+				// await dispatch('getUsers')
 				resolve()
 			})
 		}

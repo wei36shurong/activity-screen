@@ -57,8 +57,9 @@ export default {
 	align-items: center;
 	img { display: block; }
 	.placeholder {
-		background-color: #d8d8d8;
-		opacity: 0.2;
+		background-color: #b60007;
+		// background-color: #d8d8d8;
+		// opacity: 0.2;
 	}
 	// &.xl { width: @xl-size}
 	// &.lg { width: @lg-size}
