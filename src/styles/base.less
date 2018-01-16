@@ -1,14 +1,13 @@
 @import '../styles/variables';
+@import '../styles/extends';
 html, body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
 }
 body {
+	&:extend(.cover-background);
 	background-image:url(@normal-img);
-	background-repeat:no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
 	font-family:Raleway, Open Sans, Droid Sans, Roboto,arial, sans-serif;
 }
 h1,h2,h3,h4,h5,h6, p { margin: 0; line-height: 1.1; }
