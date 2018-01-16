@@ -155,7 +155,6 @@ import Panel from '@/components/Panel'
 import Avatar from '@/components/Avatar'
 import Honeycomb from '@/components/Honeycomb'
 import GlassButton from '@/components/GlassButton'
-import qrcode from '@/assets/qrcode.png'
 import avatarImg from '@/assets/avatar.png'
 import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
@@ -167,7 +166,6 @@ export default {
 	components: { Panel, Avatar, Honeycomb, GlassButton },
 	data () {
 		return {
-			qrcode,
 			avatarImg,
 			prizeBg,
 			mainBg,

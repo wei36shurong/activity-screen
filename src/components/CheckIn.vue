@@ -41,7 +41,7 @@
 	<div class="check-in">
 		<div class="wrapper">
 			<panel class="side ">
-				<img style='height:200px;width:200px;margin-top:140px;' src='../assets/qrcode.png'></img>
+				<img style='height:200px;width:200px;margin-top:140px;' :src='config.qrCode_url'></img>
 				<p style='font-size:22px;color:#fff4d4;margin-top:40px;'> 微信扫一扫签到 </p>
 			</panel>
 		</div>
@@ -70,7 +70,6 @@
 import { mapState } from 'vuex'
 import Panel from '@/components/Panel'
 import Avatar from '@/components/Avatar'
-import qrcode from '@/assets/qrcode.png'
 import mainBg from '@/assets/check-in-main-panel-bg.png'
 import avatarImg from '@/assets/avatar.png'
 import Honeycomb from '@/components/Honeycomb'
@@ -83,13 +82,12 @@ export default {
 	components: {Panel, Avatar, Honeycomb, HoneycombScroller},
 	data () {
 		return {
-			qrcode,
 			avatarImg,
 			mainBg
 		}
 	},
 	computed: {
-		...mapState('activity', ['users', 'newUser'])
+		...mapState('activity', ['users', 'newUser', 'config'])
 	},
 	async created () {
 		await this.$store.dispatch('activity/getActivity')

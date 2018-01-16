@@ -52,7 +52,7 @@ h4 { font-size: 20px;}
 	<div class="vote-before">
 		<div class="wrapper">
 			<panel class="side">
-				<img style='height:200px;width:200px;margin-top:140px;' src='../assets/qrcode.png'></img>
+				<img style='height:200px;width:200px;margin-top:140px;' :src='config.qrCode_url'></img>
 				<p style='font-size:22px;color:#fff4d4;margin-top:40px;'> 微信扫一扫签到 </p>
 			</panel>
 		</div>
@@ -90,7 +90,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState('activity', ['votes']),
+		...mapState('activity', ['votes', 'config']),
 		...mapGetters('activity', [ 'candidates', 'userNum' ]),
 		localCandidates () {
 			return this.candidates(this.groupIndex)
