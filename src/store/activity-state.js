@@ -35,24 +35,18 @@ export default {
       "title":"特等奖：iPhone X",
       "image_url":"",
       "num":1,
-      "winners":[
-      ]
-    },
-    {
+      "winners":[ ]
+    }, {
       "title":"一等奖：iPhone 8",
       "image_url":"",
       "num":5,
-      "winners":[
-
-      ]
-    },
-    {
-      "title":"二等奖：iPad",
-      "image_url":"",
-      "num":10,
-      "winners":[
-
-      ]
+      "winners":[ ]
+    }, {
+      title:'四等奖',
+      item_title:'泰国原装乳胶枕一对',
+      image_url:'http://image.yylhealth.com/zhentou.png',
+      num:8,
+      winners:[]
     }
   ],
   "votes":[

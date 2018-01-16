@@ -65,7 +65,8 @@ h4 { font-size: 20px;}
 	}
 }
 
-.avatar.xl /deep/ img {
+.avatar.xl /deep/ img,
+.avatar.xl /deep/ .placeholder {
 	border: 15px solid #ffc107;
 	box-shadow: 0 0 60px 0px #000000ad;
 }
@@ -123,7 +124,7 @@ h4 { font-size: 20px;}
 				<img class="crown" src="../assets/crown.png" @click="play">
 				<avatar class="xl" @click.native="pause"
 				:src="winner.info.avatarUrl" 
-				:name="winner.info.name" 
+				:name="winner.info.name || '虚席以待'" 
 				></avatar>
 				<h4 style="margin-top:40px;" @click="confirm">
 					<span style="color:#ffc107;">{{storedUsers.length}}人</span>参与本场抽奖
@@ -188,7 +189,8 @@ export default {
 			lotteryStartIndex: 0,
 			isPlaying: false,
 			isWaiting: true, // 等待开始抽奖
-			currentPrize: 3
+			currentPrize: 2,
+			emptyUserState
 		}
 	},
 	computed: {
@@ -203,8 +205,8 @@ export default {
 			const lastWinner = currentPrizeWinners[currentPrizeWinners.length - 1]
 			// 随机到最后一个的情况, 防止出错
 			const lastIndex = this.users.length - 1
-			if (this.winnerIndex > lastIndex) this.winnerIndex = lastIndex
-			if (this.isWaiting) return emptyUserState
+			if (this.winnerIndex > lastIndex && lastIndex >= 0) this.winnerIndex = lastIndex
+			if (this.isWaiting) return this.emptyUserState
 			return this.isPlaying
 			? this.users[this.winnerIndex]
 			: this.users[this.winnerIndex] || lastWinner
@@ -226,9 +228,6 @@ export default {
 		// init curretn prize level to last draw
 		this.currentPrize = this.draws.length - 1
 	},
-	mounted () {
-		this.autoScroll()
-	},
 	watch: {
 		autoPlay(val) {
 			clearTimeout(this.autoScrollIntervalId)
@@ -238,27 +237,6 @@ export default {
 		}
 	},
 	methods: {
-		autoScroll() {
-			const scroller = this.$el.querySelector('.y-scroller')
-			if (!scroller) return
-			this.autoScrollIntervalId = setInterval(() => {
-				scroller.scrollBy({
-					left: 1,
-					behavior: 'smooth'
-				})
-			}, 50)
-		},
-		onScroll(event, {scrollLeft}) {
-			const currentCol = scrollLeft / this.colWidth
-			if (currentCol < this.threshhold) return
-			let users = this.users
-			const swapNum = this.row * this.swapColumn
-			const swap = users.slice(0, swapNum)
-			users.splice(0, swapNum)
-			users.splice(users.length - 1, 0, ...swap)
-			this.users = users
-			event.target.scrollLeft = (this.threshhold - this.swapColumn) * this.colWidth
-		},
 		play() {
 			this.isWaiting = false
 			// 不重复播放
@@ -289,6 +267,7 @@ export default {
 				user: this.winner
 			})
 			this.users.splice(this.winnerIndex, 1)
+			this.isWaiting = true
 		}
 	},
 	sockets: {
