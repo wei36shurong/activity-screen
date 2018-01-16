@@ -160,7 +160,6 @@ import avatarImg from '@/assets/avatar.png'
 import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
 import { getRandomInt } from '@/utils'
-import types from '../store/mutation-types'
 import emptyUserState from '@/store/user-state'
 export default {
 	name: 'Lottery',
@@ -262,9 +261,9 @@ export default {
 		},
 		confirm() {
 			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num) return
-			this.$store.commit(`activity/${types.ADD_WINNER}`, {
+			this.$store.dispatch('activity/addWinner', {
 				level: this.currentPrize,
-				user: this.winner
+				winner: this.winner
 			})
 			this.users.splice(this.winnerIndex, 1)
 			this.isWaiting = true

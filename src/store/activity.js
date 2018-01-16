@@ -8,6 +8,7 @@ Vue.use(VueResource)
 const activitiesResource = Vue.resource('activities{/id}')
 const activityUsersResource = Vue.resource('activities{/id}/users')
 const activityVotesResource = Vue.resource('activities{/id}/votes')
+const activityWinnersResource = Vue.resource(`activities/${state._id}/draws{/level}/winners`)
 
 export default {
 	namespaced: true,
@@ -48,8 +49,8 @@ export default {
 			state.users.unshift(user)
 			state.newUser = {...user}
 		},
-		ADD_WINNER (state, {level, user}) {
-			state.draws[level].winners.push(user)
+		ADD_WINNER (state, {level, winner}) {
+			state.draws[level].winners.push(winner)
 		},
 		ADD_VOTER (state, {vote_index, option_index, voters_count, bonus}) {
 			console.log('bonus', bonus)
@@ -61,6 +62,13 @@ export default {
 		}
 	},
 	actions: {
+		addWinner: ({commit, state}, {level, winner}) => {
+			return new Promise(async (resolve, reject) => {
+				commit('ADD_WINNER', {level, winner})
+				await activityWinnersResource.save({level}, {userId: winner._id})
+				resolve()
+			})
+		},
 		getVotes: ({commit, state}) => {
 			return new Promise(async (resolve, reject) => {
 				const id = state._id
