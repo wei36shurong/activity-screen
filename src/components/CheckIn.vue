@@ -89,9 +89,6 @@ export default {
 	computed: {
 		...mapState('activity', ['users', 'newUser', 'config'])
 	},
-	async created () {
-		await this.$store.dispatch('activity/getActivity')
-	},
 	methods: {
 		checkIn () {
 			userState._id = getRandomInt(0, 1000)

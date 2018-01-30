@@ -95,9 +95,6 @@ export default {
 		localCandidates () {
 			return this.candidates(this.groupIndex)
 		}
-	},
-	async created() {
-		// await this.$store.dispatch('getActivity')
 	}
 }
 </script>

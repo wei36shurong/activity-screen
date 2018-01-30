@@ -192,6 +192,7 @@ export default {
 			emptyUserState
 		}
 	},
+	props: ['groupIndex'],
 	computed: {
 		...mapState('activity', {
 			storedUsers: 'users'
@@ -219,10 +220,6 @@ export default {
 		}
 	},
 	async created () {
-		// TODO delele
-		await this.$store.dispatch('activity/getActivity')
-		await this.$store.dispatch('activity/getUsers')
-
 		this.users = this.storedUsers
 		// init curretn prize level to last draw
 		this.currentPrize = this.draws.length - 1
@@ -233,7 +230,10 @@ export default {
 			if (val) {
 				this.autoScroll()
 			}
-		}
+		},
+		async groupIndex() {
+			await this.$store.dispatch('activity/getLotteries')
+		},
 	},
 	methods: {
 		play() {

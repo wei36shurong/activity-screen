@@ -8,6 +8,7 @@ Vue.use(VueResource)
 const activitiesResource = Vue.resource('activities{/id}')
 const activityUsersResource = Vue.resource('activities{/id}/users')
 const activityVotesResource = Vue.resource('activities{/id}/votes')
+const activityLotteriesResource = Vue.resource('activities{/id}/Lotteries')
 const activityWinnersResource = Vue.resource(`activities/${state._id}/draws{/level}/winners`)
 
 export default {
@@ -69,6 +70,14 @@ export default {
 				resolve()
 			})
 		},
+		getLotteries: ({commit, state}) => {
+			return new Promise(async (resolve, reject) => {
+				const id = state._id
+				const {body: votes} = await activityLotteriesResource.get({id})
+				commit('LOAD_VOTES', votes)
+				resolve()
+			})
+		},
 		getVotes: ({commit, state}) => {
 			return new Promise(async (resolve, reject) => {
 				const id = state._id
@@ -86,9 +95,9 @@ export default {
 				resolve()
 			})
 		},
-		getActivity: ({dispatch, commit, state}) => {
+		getActivity: ({dispatch, commit, state}, activityId) => {
 			return new Promise(async (resolve, reject) => {
-				const id = state._id
+				const id = activityId
 				const {body: activity} = await activitiesResource.get({id})
 				commit('LOAD_ACTIVITY', activity, { root: true })
 				await dispatch('getUsers')
