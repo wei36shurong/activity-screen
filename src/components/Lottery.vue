@@ -188,11 +188,11 @@ export default {
 			lotteryStartIndex: 0,
 			isPlaying: false,
 			isWaiting: true, // 等待开始抽奖
-			currentPrize: 2,
+			// currentPrize: 2,
 			emptyUserState
 		}
 	},
-	props: ['groupIndex'],
+	props: ['currentPrize'],
 	computed: {
 		...mapState('activity', {
 			storedUsers: 'users'
@@ -221,8 +221,6 @@ export default {
 	},
 	async created () {
 		this.users = this.storedUsers
-		// init curretn prize level to last draw
-		this.currentPrize = this.draws.length - 1
 	},
 	watch: {
 		autoPlay(val) {

@@ -38,9 +38,12 @@ export default new Router({
 			}, {
 				path: 'votes', redirect: '/votes/0'
 			}, {
-				path: 'lottery/:groupIndex',
+				path: 'lottery/:currentPrize',
 				component: Lottery,
 				props: true
+			}, {
+				path: 'lottery',
+				redirect: 'lottery/0'
 			}
 		]
 	}]
