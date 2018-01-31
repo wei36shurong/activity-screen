@@ -63,7 +63,7 @@ export default {
 	},
 	watch: {
 		autoPlay(val) {
-			clearTimeout(this.autoScrollIntervalId)
+			clearInterval(this.autoScrollIntervalId)
 			if (val) this.autoScroll()
 		},
 		users() {

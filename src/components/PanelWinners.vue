@@ -1,28 +1,49 @@
+<style lang="less" scoped>
+.panel-winners .grid{
+	display: grid;
+	grid-template-rows: 46px;
+	grid-row-gap: 12px;
+	width: 100%;
+	.row {
+		display: flex;
+		align-items: center;
+		justify-items: center;
+		.name {
+			font-size: 20px;
+			padding-left: 22px;
+			flex: 1;
+			text-align: left;
+			vertical-align: middle;
+		}
+	}
+}
+.panel-winners /deep/ .content { background-color: #ff780099; }
+</style>
 <template>
-<div class="panel">
-	<div class="box tinted">
-		<div class="header" v-if="hasHeader">
-			<span class="header-left"><slot name="header-left"></slot></span>
-			<span class="header-right"><slot name="header-right"></slot></span>
-			<slot name="header"></slot>
-		</div>
-		<div class="content"
-		:class="{'without-header': !hasHeader}"
-		:style="{padding: `${padding}`, backgroundImage: `url(${bg})`, backgroundColor: `${bgColor}`}"
-		>
-			<slot></slot>
+<panel class="panel-winners">
+	<h3 style="margin-bottom: 22px;">中奖名单</h3>
+	<div class="grid">
+		<div class="row" v-for="winner in winners" >
+			<avatar 
+			bgColor="#ff780099"
+			:size="44"
+			:key="winner._id"
+			:src="winner.info.avatarUrl" 
+			></avatar>
+			<span class="name">{{winner.info.name}}</span>
 		</div>
 	</div>
-</div>
+</panel>
 </template>
 
 <script>
+import Panel from '@/components/Panel'
+import Avatar from '@/components/Avatar'
 export default {
-	name: 'Panel',
+	components: { Panel, Avatar },
+	name: 'PanelWinner',
 	props: {
-		bg: String,
-		bgColor: String,
-		padding: String
+		winners: Array
 	},
 	data () {
 		return {

@@ -10,7 +10,8 @@
 }
 .lottery {
 	display: grid;
-	grid-template-columns: 380px 680px 380px;
+	// grid-template-columns: 380px 680px 380px;
+	grid-template-columns: 380px 1080px;
 	grid-template-rows: 550px;
 	grid-column-gap: 20px;
 	& > .wrapper {
@@ -24,9 +25,6 @@
 		}
 	}
 }
-.panel.main /deep/ .content { background-color: #c5000bc0; }
-.panel.left /deep/ .content { background-color: #ff780099; }
-.panel.right /deep/ .content { background-color: #ff780099; }
 
 .panel /deep/ .content {
 	padding: 40px;
@@ -72,35 +70,21 @@ h4 { font-size: 20px;}
 }
 
 
-// TODO
 .wrapper.main {
 	position: relative;
-	.crown {
-		position: absolute;
-		z-index: 99;
-		top: 96px;
-		left: 288px;
-	}
-}
-
-.wrapper.right .grid{
-	display: grid;
-	grid-template-rows: 46px;
-	grid-row-gap: 12px;
-	width: 100%;
-	.row {
+	.crown-wrapper {
+		position:	relative;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		justify-items: center;
-		.name {
-			font-size: 20px;
-			padding-left: 22px;
-			flex: 1;
-			text-align: left;
-			vertical-align: middle;
+		.crown {
+			position: relative;
+			top: 15px;
+			z-index: 99;
 		}
 	}
 }
+
 
 </style>
 
@@ -108,7 +92,7 @@ h4 { font-size: 20px;}
 <div class="container">
 	<div class="lottery">
 		<div class="wrapper left">
-			<panel class="left">
+			<panel class="left" bgColor="#ff780099">
 				<h3>{{draw.title}}</h3>
 				<div class="prize-img-wrapper" 
 				:style="{backgroundImage: `url(${prizeBg})`}">
@@ -119,31 +103,18 @@ h4 { font-size: 20px;}
 			</panel>
 		</div>
 		<div class="wrapper main">
-			<panel class="main" :bg="mainBg">
-				<h3 style="margin-bottom:74px;" @click="drawAll"> {{draw.title}}获奖者 </h3>
-				<img class="crown" src="../assets/crown.png" @click="play">
-				<avatar class="xl" @click.native="pause"
-				:src="winner.info.avatarUrl" 
-				:name="winner.info.name || '虚席以待'" 
-				></avatar>
+			<panel class="main" :bg="mainBg" bgColor="#c5000bc0">
+				<h3 style="margin-bottom:20px;" @click="drawAll"> {{draw.title}}获奖者 </h3>
+				<div class="crown-wrapper">
+					<img class="crown" src="../assets/crown.png" @click="play">
+					<avatar class="xl" @click.native="pause"
+					:src="winner.info.avatarUrl" 
+					:name="winner.info.name || '虚席以待'" 
+					></avatar>
+				</div>
 				<h4 style="margin-top:40px;" @click="confirm">
 					<span style="color:#ffc107;">{{storedUsers.length}}人</span>参与本场抽奖
 				</h4>
-			</panel>
-		</div>
-		<div class="wrapper right">
-			<panel class="right">
-				<h3 style="margin-bottom: 22px;">中奖名单</h3>
-				<div class="grid">
-					<div class="row" v-for="winner in draw.winners" >
-						<avatar 
-						:size="44"
-						:key="winner._id"
-						:src="winner.info.avatarUrl" 
-						></avatar>
-						<span class="name">{{winner.info.name}}</span>
-					</div>
-				</div>
 			</panel>
 		</div>
 	</div>
@@ -156,6 +127,7 @@ import Panel from '@/components/Panel'
 import Avatar from '@/components/Avatar'
 import Honeycomb from '@/components/Honeycomb'
 import GlassButton from '@/components/GlassButton'
+import PanelWinners from '@/components/PanelWinners'
 import avatarImg from '@/assets/avatar.png'
 import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
@@ -164,7 +136,7 @@ import emptyUserState from '@/store/user-state'
 // 当数据库更新winners为id后，刷新会导致组件渲染错误（只有id信息，没有对象）
 export default {
 	name: 'Lottery',
-	components: { Panel, Avatar, Honeycomb, GlassButton },
+	components: { Panel, Avatar, Honeycomb, GlassButton, PanelWinners },
 	data () {
 		return {
 			avatarImg,
@@ -243,6 +215,12 @@ export default {
 		},
 	},
 	methods: {
+		playAll() {
+			// TODO
+		},
+		pauseAll() {
+			// TODO
+		},
 		drawAll() {
 			let num = this.draws[this.currentPrize].num // 确定名额
 			const interval = 500 // 配置间隔
