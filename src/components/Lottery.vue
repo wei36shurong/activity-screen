@@ -120,7 +120,7 @@ h4 { font-size: 20px;}
 		</div>
 		<div class="wrapper main">
 			<panel class="main" :bg="mainBg">
-				<h3 style="margin-bottom:74px;"> {{draw.title}}获奖者 </h3>
+				<h3 style="margin-bottom:74px;" @click="drawAll"> {{draw.title}}获奖者 </h3>
 				<img class="crown" src="../assets/crown.png" @click="play">
 				<avatar class="xl" @click.native="pause"
 				:src="winner.info.avatarUrl" 
@@ -161,6 +161,7 @@ import prizeBg from '@/assets/prize-bg.png'
 import mainBg from '@/assets/lottery-main-panel-bg.png'
 import { getRandomInt } from '@/utils'
 import emptyUserState from '@/store/user-state'
+// 当数据库更新winners为id后，刷新会导致组件渲染错误（只有id信息，没有对象）
 export default {
 	name: 'Lottery',
 	components: { Panel, Avatar, Honeycomb, GlassButton },
@@ -188,11 +189,9 @@ export default {
 			lotteryStartIndex: 0,
 			isPlaying: false,
 			isWaiting: true, // 等待开始抽奖
-			// currentPrize: 2,
 			emptyUserState
 		}
 	},
-	props: ['currentPrize'],
 	computed: {
 		...mapState('activity', {
 			storedUsers: 'users'
@@ -219,9 +218,7 @@ export default {
 			return end >= 0 ? end : 0
 		}
 	},
-	async created () {
-		this.users = this.storedUsers
-	},
+	props: ['currentPrize'],
 	watch: {
 		autoPlay(val) {
 			clearTimeout(this.autoScrollIntervalId)
@@ -229,11 +226,34 @@ export default {
 				this.autoScroll()
 			}
 		},
-		async groupIndex() {
-			await this.$store.dispatch('activity/getLotteries')
+		'$store.state.activity.loaded' (val) {
+			if (!val) return
+			// 当活动数据加载完时
+			this.users = this.storedUsers
+
+			if (this.currentPrize) return
+			// 当没有显示设置组别时
+
+			// 设置成最后一组
+			const currentPrize = this.draws.length - 1
+			this.$router.push({name: 'lottery', params: {currentPrize}})
+		},
+		'$route' (to, from) {
+			// react to route changes
 		},
 	},
 	methods: {
+		drawAll() {
+			let num = this.draws[this.currentPrize].num // 确定名额
+			const interval = 500 // 配置间隔
+
+			// 循环抽奖
+			const id = setInterval(() => {
+				this.play(); this.pause(); this.confirm()
+				console.log(num)
+				if (--num <= 0) clearInterval(id)
+			}, interval)
+		},
 		play() {
 			this.isWaiting = false
 			// 不重复播放
@@ -241,7 +261,13 @@ export default {
 			this.isPlaying = true
 			console.log('play')
 			// 当名额满时跳到下一个
-			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num && this.currentPrize > 0) this.currentPrize--
+			if (this.prizeWinners[this.currentPrize].length >= this.draws[this.currentPrize].num && this.currentPrize > 0) {
+				// 手动跳转
+				return
+				// 设置成最后一组
+				const currentPrize = this.draws.length - 1
+				this.$router.push({name: 'lottery', params: {currentPrize}})
+			}
 			// 当都抽完时不再进行
 			if (this.currentPrize < 0) return
 			this.playIntervalId = setInterval(() => {

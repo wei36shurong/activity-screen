@@ -1,8 +1,6 @@
 import state from './activity-state'
 import Vue from 'vue'
 import VueResource from 'vue-resource'
-// import types from './mutation-types'
-import {to} from '../utils'
 
 Vue.use(VueResource)
 const activitiesResource = Vue.resource('activities{/id}')
@@ -40,6 +38,9 @@ export default {
 	},
 	mutations: {
 		// this.commit 的会跑在记录里，socket的不行
+		SET_LOADED (state) {
+			Vue.set(state, 'loaded', true)
+		},
 		LOAD_VOTES (state, votes) {
 			state.votes = votes
 		},
@@ -66,8 +67,10 @@ export default {
 		addWinner: ({commit, state}, {level, winner}) => {
 			return new Promise(async (resolve, reject) => {
 				commit('ADD_WINNER', {level, winner})
-				await activityWinnersResource.save({level}, {userId: winner._id})
+				// TEST
 				resolve()
+				return
+				await activityWinnersResource.save({level}, {userId: winner._id})
 			})
 		},
 		getLotteries: ({commit, state}) => {
@@ -89,8 +92,7 @@ export default {
 		getUsers: ({commit, state}) => {
 			return new Promise(async (resolve, reject) => {
 				const id = state._id
-				const [err, {body: users}] = await to(activityUsersResource.get({id}))
-				if (err) return
+				const {body: users} = await activityUsersResource.get({id})
 				commit('LOAD_USERS', users)
 				resolve()
 			})
@@ -101,6 +103,7 @@ export default {
 				const {body: activity} = await activitiesResource.get({id})
 				commit('LOAD_ACTIVITY', activity, { root: true })
 				await dispatch('getUsers')
+				commit('SET_LOADED')
 				resolve()
 			})
 		}

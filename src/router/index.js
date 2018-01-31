@@ -38,12 +38,10 @@ export default new Router({
 			}, {
 				path: 'votes', redirect: '/votes/0'
 			}, {
-				path: 'lottery/:currentPrize',
+				name: 'lottery',
+				path: 'lottery/:currentPrize?',
 				component: Lottery,
 				props: true
-			}, {
-				path: 'lottery',
-				redirect: 'lottery/0'
 			}
 		]
 	}]

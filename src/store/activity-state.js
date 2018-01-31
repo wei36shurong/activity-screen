@@ -1,5 +1,6 @@
 /* eslint-disable */
 export default {
+  loaded: false,
   "_id": "5a59a9c43926a5788cf6fd96",
   "config":{
     "title":"2017年福信集团年会",
