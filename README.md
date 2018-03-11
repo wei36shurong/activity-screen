@@ -2,29 +2,13 @@
 
 > vote, lottery, sign in for live show
 
-## Build Setup
+## Demo
 
-``` bash
-# install dependencies
-npm install
+Check in: http://118.25.21.169/#/check-in
 
-# serve with hot reload at localhost:8080
-npm run dev
+Votes: http://118.25.21.169/#/votes
 
-# build for production with minification
-npm run build
+Lottery: http://118.25.21.169/#/lottery/0
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## FYI
+This project runs with Wechat's mini programs, which you can login by scanning the QR code on left side in the check in page.
