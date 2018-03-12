@@ -31,8 +31,7 @@ export default {
 			threshhold: 10, // cols
 			swapColumn: 3, // cols
 			intervalId: '',
-			localUsers,
-			hasLoaded: false
+			localUsers
 		}
 	},
 	props: {
@@ -67,8 +66,6 @@ export default {
 			if (val) this.autoScroll()
 		},
 		users() {
-			if (this.hasLoaded) return
-			console.log('update local users')
 			this.users.forEach(user => { this.randomInsertUser(user) })
 		},
 		newUser(user) {
@@ -77,7 +74,6 @@ export default {
 	},
 	methods: {
 		randomInsertUser (user) {
-			this.hasLoaded = true
 			const length = this.emptyUserIndexes.length
 			// 当空格都被填满，插入到最前
 			if (!length) { this.localUsers.unshift(user); return }

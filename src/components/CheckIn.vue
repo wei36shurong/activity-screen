@@ -1,3 +1,4 @@
+nfo
 <style lang='less' scoped>
 @import '../styles/base';
 @import '../styles/extends';

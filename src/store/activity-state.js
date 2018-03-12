@@ -31,7 +31,21 @@ export default {
       "openid":"oxgz60Lso90sxKr56lptK0-MP_oE"
     }
   ],
-  "draws":[
+  "newUser": {
+      "_id":"5a56fb52ad50757601370eb9",
+      "info":{
+        "name":"魏澍榕",
+        "nickName":"魏澍榕",
+        "gender":1,
+        "language":"zh_CN",
+        "city":"Xiamen",
+        "province":"Fujian",
+        "country":"China",
+        "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIQnLj91w2kibylwSeMhyxF6tsKpiarJDZTediaUh0POkrOIOzoTJLozK48STCzNYvI9G6n5VUtNFpLQ/0",
+        "name":"魏澍榕"
+      }
+  },
+  "draws": [
     {
       "title":"特等奖：iPhone X",
       "image_url":"",
@@ -50,8 +64,7 @@ export default {
       winners:[]
     }
   ],
-  "votes":[
-    {
+  "votes":[ {
       "status": 0,
       "title":"A组选手对决",
       "options":[
@@ -73,8 +86,7 @@ export default {
           "bonus":0
         }
       ]
-    },
-    {
+    }, {
       "status": 1,
       "title":"B组选手对决",
       "options":[

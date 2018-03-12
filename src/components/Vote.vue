@@ -1,11 +1,11 @@
 <template>
 <div class="vote">
 	<vote-before v-if="localVote.status == 0" 
-	:group-index="groupIndex"></vote-before>
+	:group-index="groupIndex" />
 	<vote-during v-if="localVote.status == 1"
-	:group-index="groupIndex"></vote-during>
+	:group-index="groupIndex" />
 	<vote-end v-if="localVote.status == 2"
-	:group-index="groupIndex"></vote-end>
+	:group-index="groupIndex" />
 </div>
 </template>
 
