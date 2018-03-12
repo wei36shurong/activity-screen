@@ -1,3 +1,8 @@
+<style>
+.activity {
+	height: 100%;
+}
+</style>
 <template>
 <div class="activity">
 	<router-view/>

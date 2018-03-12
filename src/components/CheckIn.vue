@@ -3,7 +3,7 @@ nfo
 @import '../styles/base';
 @import '../styles/extends';
 .container {
-	margin-top: 238px;
+	padding-top: 238px;
 	position: relative;
 	box-sizing: border-box;
 	display: flex;

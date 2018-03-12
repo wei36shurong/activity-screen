@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 .container {
-	margin-top: 238px;
+	padding-top: 238px;
 	position: relative;
 	box-sizing: border-box;
 	display: flex;
@@ -172,7 +172,8 @@ export default {
 		...mapGetters('activity', ['prizeWinners']),
 		// TODO 修改成从activity module里取
 		winner() {
-			const currentPrizeWinners = this.prizeWinners[this.currentPrize]
+			const currentPrize = this.currentPrize || this.draws.length - 1
+			const currentPrizeWinners = this.prizeWinners[currentPrize]
 			const lastWinner = currentPrizeWinners[currentPrizeWinners.length - 1]
 			// 随机到最后一个的情况, 防止出错
 			const lastIndex = this.users.length - 1
@@ -183,7 +184,12 @@ export default {
 			: this.users[this.winnerIndex] || lastWinner
 		},
 		draw() {
-			return this.draws[this.currentPrize]
+			return this.draws[this.currentPrize] || {
+				title: '特等奖：iPhone X',
+				image_url: '',
+				num: 1,
+				winners: []
+			}
 		},
 		lotteryEndIndex() {
 			const end = this.users.length - 1
@@ -200,21 +206,24 @@ export default {
 		},
 		'$store.state.activity.loaded' (val) {
 			if (!val) return
+			this.init()
+		}
+	},
+	created() {
+		this.init()
+	},
+	methods: {
+		init (val) {
 			// 当活动数据加载完时
 			this.users = this.storedUsers
 
+			// 当有显示设置组别时, 不设置
 			if (this.currentPrize) return
-			// 当没有显示设置组别时
 
-			// 设置成最后一组
+			// 当有显示设置组别时, 设置成最后一组
 			const currentPrize = this.draws.length - 1
 			this.$router.push({name: 'lottery', params: {currentPrize}})
 		},
-		'$route' (to, from) {
-			// react to route changes
-		},
-	},
-	methods: {
 		playAll() {
 			// TODO
 		},
@@ -248,6 +257,7 @@ export default {
 			}
 			// 当都抽完时不再进行
 			if (this.currentPrize < 0) return
+			console.log('play begin')
 			this.playIntervalId = setInterval(() => {
 				this.winnerIndex = getRandomInt(
 					this.lotteryStartIndex,

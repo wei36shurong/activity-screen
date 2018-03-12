@@ -10,13 +10,14 @@ Vue.use(Router)
 
 export default new Router({
 	routes: [{
+		path: '/',
+		redirect: '/5aa69a7d430eb81bfe578b7f/check-in'
+	}, {
 		props: true,
 		path: '/:activityId',
 		component: Activity,
 		children: [
 			{
-				path: '/', redirect: 'check-in'
-			}, {
 				path: 'check-in',
 				component: CheckIn
 			}, {
@@ -24,7 +25,7 @@ export default new Router({
 				component: Vote,
 				props: true
 			}, {
-				path: 'votes', redirect: '/votes/0'
+				path: 'votes', redirect: 'votes/0'
 			}, {
 				name: 'lottery',
 				path: 'lottery/:currentPrize?',
