@@ -6,10 +6,10 @@ import {to} from '../utils'
 import activity from './activity'
 import userState from './user-state'
 import VueResource from 'vue-resource'
+import config from '@/config'
 
 Vue.use(VueResource)
-// Vue.http.options.root = 'http://118.25.21.169:3000'
-Vue.http.options.root = 'https://activity.toyourcity.com'
+Vue.http.options.root = config.apiRoot
 
 Vue.use(Vuex)
 

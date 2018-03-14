@@ -11,10 +11,10 @@ Vue.use(Router)
 export default new Router({
 	routes: [{
 		path: '/',
-		redirect: '/5aa69a7d430eb81bfe578b7f/check-in'
+		redirect: 'activities/5aa69a7d430eb81bfe578b7f/check-in'
 	}, {
 		props: true,
-		path: '/:activityId',
+		path: '/activities/:activityId',
 		component: Activity,
 		children: [{
 			path: '/',

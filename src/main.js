@@ -10,7 +10,8 @@ import config from '@/config'
 
 console.log('config', config)
 console.log('apiRoot', config.apiRoot)
-Vue.use(VueSocketio, config.apiRoot, store)
+// Vue.use(VueSocketio, config.apiRoot, store)
+Vue.use(VueSocketio, 'http://118.25.21.169:3000', store)
 
 Vue.use(VueScroll)
 
