@@ -259,10 +259,12 @@ export default {
 			if (this.currentPrize < 0) return
 			console.log('play begin')
 			this.playIntervalId = setInterval(() => {
-				this.winnerIndex = getRandomInt(
+				// 如果抽中的人没有头像（假数据或重复数据），则跳过
+				const winnerIndex = getRandomInt(
 					this.lotteryStartIndex,
 					this.lotteryEndIndex
 				)
+				if (this.users[winnerIndex].info) this.winnerIndex = winnerIndex
 			}, 50)
 		},
 		pause() {

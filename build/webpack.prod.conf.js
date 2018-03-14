@@ -38,14 +38,17 @@ const webpackConfig = merge(baseWebpackConfig, {
       username: 'root',
       // password: 'password',
       privateKey: require('fs').readFileSync('/Users/Shu/.ssh/id_rsa_team'),
-      from: '/Users/Shu/Workspace/initialV/activity-vue/dist',
+      from: './dist',
       // important: If the 'cover' of value is false,All files in this folder will be cleared before starting deployment.
       cover: false,
       to: '/usr/node/activity-server/dist',
     }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      'process.env': {
+        ...env,
+        PACK_ENV: JSON.stringify(process.env.PACK_ENV || "production")
+      }
     }),
     new UglifyJsPlugin({
       uglifyOptions: {

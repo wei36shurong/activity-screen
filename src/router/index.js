@@ -16,22 +16,23 @@ export default new Router({
 		props: true,
 		path: '/:activityId',
 		component: Activity,
-		children: [
-			{
-				path: 'check-in',
-				component: CheckIn
-			}, {
-				path: 'votes/:groupIndex',
-				component: Vote,
-				props: true
-			}, {
-				path: 'votes', redirect: 'votes/0'
-			}, {
-				name: 'lottery',
-				path: 'lottery/:currentPrize?',
-				component: Lottery,
-				props: true
-			}
-		]
+		children: [{
+			path: '/',
+			redirect: 'check-in'
+		}, {
+			path: 'check-in',
+			component: CheckIn
+		}, {
+			path: 'votes/:groupIndex',
+			component: Vote,
+			props: true
+		}, {
+			path: 'votes', redirect: 'votes/0'
+		}, {
+			name: 'lottery',
+			path: 'lottery/:currentPrize?',
+			component: Lottery,
+			props: true
+		}]
 	}]
 })

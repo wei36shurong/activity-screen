@@ -66,7 +66,7 @@ export default {
 			if (val) this.autoScroll()
 		},
 		users() {
-			this.users.forEach(user => { this.randomInsertUser(user) })
+			this.users.filter(user => user.info && user.info.avatarUrl).forEach(user => { this.randomInsertUser(user) })
 		},
 		newUser(user) {
 			this.randomInsertUser(user)
